@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">쓰담쓰담 위젯</string>
+    
+    <string name="touch1">뀨?</string>
+    <string name="touch2">뀨잉?</string>
+    <string name="touch3">....?</string>
+    <string name="touch4">뀨! 뀨뀨!</string>
+    <string name="touch5">뀨우우?</string>
+    
+    <string name="slide1">뀨르릉♥</string>
+    <string name="slide2">뀨웃~ 뀨우우~</string>
+    <string name="slide3">뀨 뀨 뀨르릉~</string>
+
+</resources>
