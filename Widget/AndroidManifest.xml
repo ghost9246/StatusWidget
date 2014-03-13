@@ -5,12 +5,13 @@
     android:versionName="1.0" >
 
     <uses-sdk android:minSdkVersion="8" />
+
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
 
     <application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
-        <receiver android:name="com.sdamsdam.widget.MyCustomWidget" >
+        <receiver android:name=".WidgetMain" >
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_configuration" />
@@ -18,14 +19,14 @@
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="com.sdamsdam.widget.ACTION_EVENT" />
-                <action android:name="com.sdamsdam.widget.ACTION_MOVE" />
-                <action android:name="com.sdamsdam.widget.ACTION_DOWN" />
-                <action android:name="com.sdamsdam.widget.ACTION_UP" />
+                
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+                <action android:name="android.intent.action.BATTERY_LOW" />
+                <action android:name="android.intent.action.BATTERY_OKAY" />
+                <action android:name="android.intent.action.AIRPLANE_MODE_CHANGED" />
+                <action android:name="android.intent.action.ACTION_HEADSET_PLUG" />
             </intent-filter>
         </receiver>
     </application>
-
-    
 
 </manifest>

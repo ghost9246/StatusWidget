@@ -11,13 +11,16 @@ import android.widget.ImageView;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
-public class MyCustomWidget extends AppWidgetProvider
+public class WidgetMain extends AppWidgetProvider
 {
 	private static final String TAG = "sdamsdam";
 	private Context context;
 	
 	private static boolean isDown = false;
 	private static boolean isSMSReceived = false;
+	private static boolean isBatteryLow = false;
+	private static boolean isPlaneMode = false;
+	private static boolean isHeadset = false;
 
 	@Override
 	public void onEnabled(Context context)
@@ -38,14 +41,37 @@ public class MyCustomWidget extends AppWidgetProvider
 
 		for(int i=0; i<appWidgetIds.length; i++)
 		{
+			// this area may be trouble...
 			int appWidgetId = appWidgetIds[i];
-			RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.mycustomwidget);
+			RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
 			
-			Log.v(TAG, "SMS Received = " + isSMSReceived);  
+			Log.v(TAG, "Entering trouble area");
+			
+			if(isBatteryLow == true)
+				views.setTextViewText(R.id.textView1, "애미야 배고프다 밥 갖고 온나");
+			else if(isBatteryLow == false)
+				views.setTextViewText(R.id.textView1, "");
+			
 			if(isSMSReceived == true)
+			{
+				Log.v(TAG, "Moonja Watshong");
 				views.setTextViewText(R.id.textView1, "문자 왔숑");
+				appWidgetManager.updateAppWidget(appWidgetId, views);
+			}
 			
-			appWidgetManager.updateAppWidget(appWidgetId, views);
+			if(isPlaneMode == true)
+				views.setTextViewText(R.id.textView1, "비행기 타고 있다요");
+			else if(isPlaneMode == false)
+				views.setTextViewText(R.id.textView1, "");
+			
+			if(isHeadset == true)
+			{
+				// not working yet
+				Log.v(TAG, "Headset True");
+				views.setTextViewText(R.id.textView1, "Dodoomchit");
+			}	
+			else if(isHeadset == false)
+				views.setTextViewText(R.id.textView1, "");			
 		}
 	}
 
@@ -68,12 +94,14 @@ public class MyCustomWidget extends AppWidgetProvider
 		ImageView iv = new ImageView(context);
 		
 		Log.i(TAG, "======================= initUI() =======================");
-		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.mycustomwidget);
+		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
 
 		Intent eventIntent = new Intent(Const.ACTION_EVENT);
+		/*
 		Intent moveIntent = new Intent(Const.ACTION_MOVE);
 		Intent downIntent = new Intent(Const.ACTION_DOWN);
 		Intent upIntent = new Intent(Const.ACTION_UP);
+		*/
 		
 		PendingIntent eventPIntent = PendingIntent.getBroadcast(context, 0, eventIntent, 0);
 		/*
@@ -101,7 +129,7 @@ public class MyCustomWidget extends AppWidgetProvider
 		super.onReceive(context, intent);
 		
 		String action = intent.getAction();
-		Log.d(TAG, "onReceive() action = " + action);
+		Log.v(TAG, "onReceive() action = " + action);
 
 		// Default Receiver
 		if(AppWidgetManager.ACTION_APPWIDGET_ENABLED.equals(action)) {}
@@ -117,9 +145,28 @@ public class MyCustomWidget extends AppWidgetProvider
 		// SMS Broadcast
 		else if(Const.SMS_RECEIVED.equals(action))
 		{
-			Log.d(TAG, "SMS Received");
-			// Widget update didn't work well
 			isSMSReceived = true;
+			Log.v(TAG, "SMS Received : " + isSMSReceived);
+		}
+		else if(Const.BATTERY_LOW.equals(action))
+		{
+			Log.v(TAG, "Battery Low");
+			isBatteryLow = true;
+		}
+		else if(Const.BATTERY_OK.equals(action))
+		{
+			Log.v(TAG, "Battery Okay");
+			isBatteryLow = false;
+		}
+		else if(Const.PLANE_MODE.equals(action))
+		{
+			isPlaneMode = !isPlaneMode;
+			Log.v(TAG, "Change Airplane Mode: " + isPlaneMode);
+		}
+		else if(Const.HEADSET_MODE.equals(action))
+		{
+			isHeadset = !isHeadset;
+			Log.v(TAG, "Change Headset Mode: " + isHeadset);
 		}
 		
 		// Action
@@ -138,7 +185,7 @@ public class MyCustomWidget extends AppWidgetProvider
 		else if(Const.ACTION_MOVE.equals(action))
 		{
 			Toast.makeText(context, "MOVE", Toast.LENGTH_SHORT).show();
-		}
+		}		
 		else if(Const.ACTION_EVENT.equals(action))
 		{
 			int textcode = (int)(Math.random()*5);
@@ -169,5 +216,8 @@ public class MyCustomWidget extends AppWidgetProvider
 
 			Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
 		}
+		
+		AppWidgetManager manager = AppWidgetManager.getInstance(context);
+		this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
 	}
 }
