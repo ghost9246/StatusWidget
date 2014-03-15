@@ -20,7 +20,7 @@ public class WidgetMain extends AppWidgetProvider
 	private Context context;
 
 	private static boolean isDown = false;
-	private static boolean isSMSReceived = false;
+	private static boolean isSMSNotRead = false;
 	private static boolean isBatteryLow = false;
 	private static boolean isPlaneMode = false;
 	private static boolean isHeadset = false;
@@ -53,7 +53,7 @@ public class WidgetMain extends AppWidgetProvider
 			else if(isBatteryLow == false)
 				views.setTextViewText(R.id.textView1, "");
 
-			if(isSMSReceived == true)
+			if(isSMSNotRead == true)
 			{
 				Log.v(TAG, "Moonja Watshong");
 				views.setTextViewText(R.id.textView1, "문자 왔숑");
@@ -147,8 +147,8 @@ public class WidgetMain extends AppWidgetProvider
 		// SMS Broadcast
 		else if(Const.SMS_RECEIVED.equals(action))
 		{
-			isSMSReceived = true;
-			Log.v(TAG, "SMS Received : " + isSMSReceived);
+			Check_SMSRead(context);
+			Log.v(TAG, "SMS Received : " + isSMSNotRead);
 		}
 		else if(Const.BATTERY_LOW.equals(action))
 		{
@@ -218,19 +218,21 @@ public class WidgetMain extends AppWidgetProvider
 
 			Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
 			Check_SMSRead(context);
+			
+			AppWidgetManager manager = AppWidgetManager.getInstance(context);
+			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
+			
+			// 문자 오면 바로 뜨는건 되는데 읽고 나서가 문제
 		}
-
-		AppWidgetManager manager = AppWidgetManager.getInstance(context);
-		this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
 	}
 
 	public void Check_SMSRead(Context context)
 	{
 		Log.v(TAG, "Entering trouble zone");
-		
+
 		Uri allMessage = Uri.parse("content://sms");
 		ContentResolver cr = context.getContentResolver();
-		
+
 		Cursor c = cr.query(allMessage, 
 				new String[] { "_id", "thread_id", "address", "person", "date", "body",
 				"protocol","read","status", "type","reply_path_present",
@@ -238,8 +240,16 @@ public class WidgetMain extends AppWidgetProvider
 				null, null, 
 				"date DESC");
 
-		int read = c.getInt(7);			// trouble code. OutOfIndex??
+		if (c != null)
+			c.moveToFirst();
 		
+		long read = c.getLong(7);
+		
+		if(read == 1)
+			isSMSNotRead = false;
+		else
+			isSMSNotRead = true;
+
 		Log.v(TAG, "success");
 	}
 }
