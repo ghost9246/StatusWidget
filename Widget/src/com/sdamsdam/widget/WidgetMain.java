@@ -59,10 +59,15 @@ public class WidgetMain extends AppWidgetProvider
 				views.setTextViewText(R.id.textView1, "문자 왔숑");
 				appWidgetManager.updateAppWidget(appWidgetId, views);
 			}
+			else
+			{
+				views.setTextViewText(R.id.textView1, "");
+				appWidgetManager.updateAppWidget(appWidgetId, views);
+			}
 
 			if(isPlaneMode == true)
 				views.setTextViewText(R.id.textView1, "비행기 타고 있다요");
-			else if(isPlaneMode == false)
+			else
 				views.setTextViewText(R.id.textView1, "");
 
 			if(isHeadset == true)
@@ -71,7 +76,7 @@ public class WidgetMain extends AppWidgetProvider
 				Log.v(TAG, "Headset True");
 				views.setTextViewText(R.id.textView1, "Dodoomchit");
 			}	
-			else if(isHeadset == false)
+			else
 				views.setTextViewText(R.id.textView1, "");			
 		}
 	}
@@ -147,8 +152,11 @@ public class WidgetMain extends AppWidgetProvider
 		// SMS Broadcast
 		else if(Const.SMS_RECEIVED.equals(action))
 		{
-			Check_SMSRead(context);
-			Log.v(TAG, "SMS Received : " + isSMSNotRead);
+			Log.v(TAG, "SMS Received");
+			
+			isSMSNotRead = true;
+			AppWidgetManager manager = AppWidgetManager.getInstance(context);
+			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
 		}
 		else if(Const.BATTERY_LOW.equals(action))
 		{
@@ -222,7 +230,8 @@ public class WidgetMain extends AppWidgetProvider
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
 			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
 			
-			// 문자 오면 바로 뜨는건 되는데 읽고 나서가 문제
+			// solution A: check SMS when screen on
+			// solution B: touch rammus(temporary solution for user who DON'T turn off screen)
 		}
 	}
 
