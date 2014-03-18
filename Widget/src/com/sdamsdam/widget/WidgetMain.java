@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RemoteViews;
@@ -22,8 +23,8 @@ public class WidgetMain extends AppWidgetProvider
 	private static boolean isDown = false;
 	private static boolean isSMSNotRead = false;
 	private static boolean isBatteryLow = false;
-	private static boolean isPlaneMode = false;
 	private static boolean isHeadset = false;
+	private static boolean isPlaneMode = false;
 
 	@Override
 	public void onEnabled(Context context)
@@ -49,7 +50,7 @@ public class WidgetMain extends AppWidgetProvider
 			RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
 
 			if(isBatteryLow == true)
-				views.setTextViewText(R.id.textView1, "애미야 배고프다 밥 갖고 온나");
+				views.setTextViewText(R.id.textView1, "Battery Low");
 			else if(isBatteryLow == false)
 				views.setTextViewText(R.id.textView1, "");
 
@@ -66,18 +67,28 @@ public class WidgetMain extends AppWidgetProvider
 			}
 
 			if(isPlaneMode == true)
-				views.setTextViewText(R.id.textView1, "비행기 타고 있다요");
-			else
+			{
+				views.setTextViewText(R.id.textView1, "비행기 탔숑");
+				appWidgetManager.updateAppWidget(appWidgetId, views);
+			}
+			else	
+			{
 				views.setTextViewText(R.id.textView1, "");
+				appWidgetManager.updateAppWidget(appWidgetId, views);
+			}
 
 			if(isHeadset == true)
 			{
 				// not working yet
 				Log.v(TAG, "Headset True");
-				views.setTextViewText(R.id.textView1, "Dodoomchit");
+				views.setTextViewText(R.id.textView1, "두둠칫 두둠칫");
+				appWidgetManager.updateAppWidget(appWidgetId, views);
 			}	
 			else
-				views.setTextViewText(R.id.textView1, "");			
+			{
+				views.setTextViewText(R.id.textView1, "");
+				appWidgetManager.updateAppWidget(appWidgetId, views);
+			}
 		}
 	}
 
@@ -170,8 +181,15 @@ public class WidgetMain extends AppWidgetProvider
 		}
 		else if(Const.PLANE_MODE.equals(action))
 		{
-			isPlaneMode = !isPlaneMode;
-			Log.v(TAG, "Change Airplane Mode: " + isPlaneMode);
+			if(Settings.System.getInt(context.getContentResolver(),Settings.System.AIRPLANE_MODE_ON, 0) == 1)
+				isPlaneMode = true;
+			else
+				isPlaneMode = false;
+			
+			Log.v(TAG, "isPlaneMode: " + isPlaneMode);
+			
+			AppWidgetManager manager = AppWidgetManager.getInstance(context);
+			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
 		}
 		else if(Const.HEADSET_MODE.equals(action))
 		{
@@ -216,11 +234,11 @@ public class WidgetMain extends AppWidgetProvider
 				break;
 
 			case 3:
-				text = "뀨웃! 뀨우웃!";
+				text = "뀨! 뀨우웃!";
 				break;
 
 			case 4:
-				text = "뀨르르르릉....";
+				text = "뀨우우...";
 				break;
 			}
 
@@ -231,14 +249,12 @@ public class WidgetMain extends AppWidgetProvider
 			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
 			
 			// solution A: check SMS when screen on
-			// solution B: touch rammus(temporary solution for user who DON'T turn off screen)
+			// solution B: touch Rammus(temporary solution for user who DON'T turn off screen)
 		}
 	}
 
 	public void Check_SMSRead(Context context)
 	{
-		Log.v(TAG, "Entering trouble zone");
-
 		Uri allMessage = Uri.parse("content://sms");
 		ContentResolver cr = context.getContentResolver();
 
