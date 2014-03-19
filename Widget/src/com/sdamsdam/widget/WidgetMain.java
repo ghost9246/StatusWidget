@@ -52,14 +52,18 @@ public class WidgetMain extends AppWidgetProvider
 			RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
 			
 			views.setTextViewText(R.id.textView1, "");
+			appWidgetManager.updateAppWidget(appWidgetId, views);
 
 			if(isBatteryLow == true)
+			{
 				views.setTextViewText(R.id.textView1, "Battery Low");
+				appWidgetManager.updateAppWidget(appWidgetId, views);
+			}
 			
 			if(isSMSNotRead == true)
 			{
 				Log.v(TAG, "Moonja Watshong");
-				views.setTextViewText(R.id.textView1, "문자 왔숑");
+				views.setTextViewText(R.id.textView1, "SMS Received");
 				appWidgetManager.updateAppWidget(appWidgetId, views);
 			}
 			
@@ -72,7 +76,7 @@ public class WidgetMain extends AppWidgetProvider
 
 			if(isPlaneMode == true)
 			{
-				views.setTextViewText(R.id.textView1, "비행기 탔숑");
+				views.setTextViewText(R.id.textView1, "I'm on a plane");
 				appWidgetManager.updateAppWidget(appWidgetId, views);
 			}
 
@@ -80,7 +84,7 @@ public class WidgetMain extends AppWidgetProvider
 			{
 				// not working yet
 				Log.v(TAG, "Headset True");
-				views.setTextViewText(R.id.textView1, "두둠칫 두둠칫");
+				views.setTextViewText(R.id.textView1, "Ear breaking");
 				appWidgetManager.updateAppWidget(appWidgetId, views);
 			}
 		}
@@ -142,6 +146,8 @@ public class WidgetMain extends AppWidgetProvider
 
 		String action = intent.getAction();
 		Log.v(TAG, "onReceive() action = " + action);
+		
+		Log.d("HeadSetPlugInTest", "state: " + intent.getIntExtra("state", -1));
 
 		// Default Receiver
 		if(AppWidgetManager.ACTION_APPWIDGET_ENABLED.equals(action)) {}
@@ -155,7 +161,7 @@ public class WidgetMain extends AppWidgetProvider
 
 		// Custom Recevier
 		// SMS Broadcast
-		else if(Const.SMS_RECEIVED.equals(action))
+		else if (Const.SMS_RECEIVED.equals(action))
 		{
 			Log.v(TAG, "SMS Received");
 
@@ -167,11 +173,6 @@ public class WidgetMain extends AppWidgetProvider
 		{
 			Log.v(TAG, "Battery Low");
 			isBatteryLow = true;
-		}
-		else if(Const.BATTERY_OK.equals(action))
-		{
-			Log.v(TAG, "Battery Okay");
-			isBatteryLow = false;
 		}
 		else if(Const.WIFI_CONNCHANGE.equals(action))
 		{
@@ -194,13 +195,14 @@ public class WidgetMain extends AppWidgetProvider
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
 			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
 		}
-		else if(Const.HEADSET_MODE.equals(action))
+		else if(Intent.ACTION_HEADSET_PLUG.equals(action))
 		{
 			isHeadset = !isHeadset;
-			Log.v(TAG, "Change Headset Mode: " + isHeadset);
+			Log.v(TAG, "Headset Mode: " + isHeadset);
 		}
 
 		// Action
+		/*
 		else if(Const.ACTION_DOWN.equals(action))
 		{
 			Toast.makeText(context, "DOWN", Toast.LENGTH_SHORT).show();
@@ -216,7 +218,8 @@ public class WidgetMain extends AppWidgetProvider
 		else if(Const.ACTION_MOVE.equals(action))
 		{
 			Toast.makeText(context, "MOVE", Toast.LENGTH_SHORT).show();
-		}		
+		}
+		*/		
 		else if(Const.ACTION_EVENT.equals(action))
 		{
 			int textcode = (int)(Math.random()*5);
@@ -225,7 +228,7 @@ public class WidgetMain extends AppWidgetProvider
 			switch(textcode)
 			{
 			case 0:
-				text = "뀨?";
+				text = "?";
 				break;
 
 			case 1:
@@ -233,25 +236,26 @@ public class WidgetMain extends AppWidgetProvider
 				break;
 
 			case 2:
-				text = "뀨잉...";
+				text = "...";
 				break;
 
 			case 3:
-				text = "뀨우웃!";
+				text = "!!!";
 				break;
 
 			case 4:
-				text = "뀨우...";
+				text = "...!!";
 				break;
 			}
 
 			Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+			
 			Check_SMSRead(context);
 
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
 			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
 
-			// solution A: check SMS when screen on
+			// solution A: check SMS/WiFi when screen on
 			// solution B: touch Rammus(temporary solution for user who DON'T turn off screen)
 		}
 	}
@@ -277,7 +281,5 @@ public class WidgetMain extends AppWidgetProvider
 			isSMSNotRead = false;
 		else
 			isSMSNotRead = true;
-
-		Log.v(TAG, "success");
 	}
 }
