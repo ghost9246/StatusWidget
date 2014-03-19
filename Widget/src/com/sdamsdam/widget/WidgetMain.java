@@ -8,7 +8,9 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.NetworkInfo;
 import android.net.Uri;
+import android.net.wifi.WifiManager;
 import android.provider.Settings;
 import android.util.Log;
 import android.widget.ImageView;
@@ -25,6 +27,7 @@ public class WidgetMain extends AppWidgetProvider
 	private static boolean isBatteryLow = false;
 	private static boolean isHeadset = false;
 	private static boolean isPlaneMode = false;
+	private static boolean isWifiConnected = false;
 
 	@Override
 	public void onEnabled(Context context)
@@ -45,24 +48,25 @@ public class WidgetMain extends AppWidgetProvider
 
 		for(int i=0; i<appWidgetIds.length; i++)
 		{
-			// this area may be trouble...
 			int appWidgetId = appWidgetIds[i];
 			RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
+			
+			views.setTextViewText(R.id.textView1, "");
 
 			if(isBatteryLow == true)
 				views.setTextViewText(R.id.textView1, "Battery Low");
-			else if(isBatteryLow == false)
-				views.setTextViewText(R.id.textView1, "");
-
+			
 			if(isSMSNotRead == true)
 			{
 				Log.v(TAG, "Moonja Watshong");
 				views.setTextViewText(R.id.textView1, "문자 왔숑");
 				appWidgetManager.updateAppWidget(appWidgetId, views);
 			}
-			else
+			
+			if(isWifiConnected == true)
 			{
-				views.setTextViewText(R.id.textView1, "");
+				Log.v(TAG, "Wifi Connected");
+				views.setTextViewText(R.id.textView1, "WiFi");
 				appWidgetManager.updateAppWidget(appWidgetId, views);
 			}
 
@@ -71,22 +75,12 @@ public class WidgetMain extends AppWidgetProvider
 				views.setTextViewText(R.id.textView1, "비행기 탔숑");
 				appWidgetManager.updateAppWidget(appWidgetId, views);
 			}
-			else	
-			{
-				views.setTextViewText(R.id.textView1, "");
-				appWidgetManager.updateAppWidget(appWidgetId, views);
-			}
 
 			if(isHeadset == true)
 			{
 				// not working yet
 				Log.v(TAG, "Headset True");
 				views.setTextViewText(R.id.textView1, "두둠칫 두둠칫");
-				appWidgetManager.updateAppWidget(appWidgetId, views);
-			}	
-			else
-			{
-				views.setTextViewText(R.id.textView1, "");
 				appWidgetManager.updateAppWidget(appWidgetId, views);
 			}
 		}
@@ -164,7 +158,7 @@ public class WidgetMain extends AppWidgetProvider
 		else if(Const.SMS_RECEIVED.equals(action))
 		{
 			Log.v(TAG, "SMS Received");
-			
+
 			isSMSNotRead = true;
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
 			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
@@ -179,15 +173,24 @@ public class WidgetMain extends AppWidgetProvider
 			Log.v(TAG, "Battery Okay");
 			isBatteryLow = false;
 		}
+		else if(Const.WIFI_CONNCHANGE.equals(action))
+		{
+			Log.v(TAG, "Wifi Connect state changed");
+			NetworkInfo netInfo = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
+			isWifiConnected = netInfo.isConnected();
+			
+			AppWidgetManager manager = AppWidgetManager.getInstance(context);
+			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
+		}
 		else if(Const.PLANE_MODE.equals(action))
 		{
 			if(Settings.System.getInt(context.getContentResolver(),Settings.System.AIRPLANE_MODE_ON, 0) == 1)
 				isPlaneMode = true;
 			else
 				isPlaneMode = false;
-			
+
 			Log.v(TAG, "isPlaneMode: " + isPlaneMode);
-			
+
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
 			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
 		}
@@ -234,20 +237,20 @@ public class WidgetMain extends AppWidgetProvider
 				break;
 
 			case 3:
-				text = "뀨! 뀨우웃!";
+				text = "뀨우웃!";
 				break;
 
 			case 4:
-				text = "뀨우우...";
+				text = "뀨우...";
 				break;
 			}
 
 			Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
 			Check_SMSRead(context);
-			
+
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
 			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
-			
+
 			// solution A: check SMS when screen on
 			// solution B: touch Rammus(temporary solution for user who DON'T turn off screen)
 		}
@@ -267,9 +270,9 @@ public class WidgetMain extends AppWidgetProvider
 
 		if (c != null)
 			c.moveToFirst();
-		
+
 		long read = c.getLong(7);
-		
+
 		if(read == 1)
 			isSMSNotRead = false;
 		else
