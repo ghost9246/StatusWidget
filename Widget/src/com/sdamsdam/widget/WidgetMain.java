@@ -48,45 +48,30 @@ public class WidgetMain extends AppWidgetProvider
 
 		for(int i=0; i<appWidgetIds.length; i++)
 		{
+			String output = "";
 			int appWidgetId = appWidgetIds[i];
 			RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
-			
-			views.setTextViewText(R.id.textView1, "");
-			appWidgetManager.updateAppWidget(appWidgetId, views);
 
+			
 			if(isBatteryLow == true)
-			{
-				views.setTextViewText(R.id.textView1, "Battery Low");
-				appWidgetManager.updateAppWidget(appWidgetId, views);
-			}
+				output = output.concat("Battery_Low ");
 			
 			if(isSMSNotRead == true)
-			{
-				Log.v(TAG, "Moonja Watshong");
-				views.setTextViewText(R.id.textView1, "SMS Received");
-				appWidgetManager.updateAppWidget(appWidgetId, views);
-			}
+				output = output.concat("SMS ");
 			
 			if(isWifiConnected == true)
-			{
-				Log.v(TAG, "Wifi Connected");
-				views.setTextViewText(R.id.textView1, "WiFi");
-				appWidgetManager.updateAppWidget(appWidgetId, views);
-			}
+				output = output.concat("WiFi ");
 
 			if(isPlaneMode == true)
-			{
-				views.setTextViewText(R.id.textView1, "I'm on a plane");
-				appWidgetManager.updateAppWidget(appWidgetId, views);
-			}
+				output = output.concat("Plane ");
 
 			if(isHeadset == true)
-			{
-				// not working yet
-				Log.v(TAG, "Headset True");
-				views.setTextViewText(R.id.textView1, "Ear breaking");
-				appWidgetManager.updateAppWidget(appWidgetId, views);
-			}
+				output = output.concat("Headset");
+			
+			
+			Log.v(TAG, "Supposed output: "+output);
+			views.setTextViewText(R.id.textView1, output);
+			appWidgetManager.updateAppWidget(appWidgetId, views);
 		}
 	}
 
@@ -173,6 +158,11 @@ public class WidgetMain extends AppWidgetProvider
 		{
 			Log.v(TAG, "Battery Low");
 			isBatteryLow = true;
+		}
+		else if(Const.BATTERY_LOW.equals(action))
+		{
+			Log.v(TAG, "Battery Okay");
+			isBatteryLow = false;
 		}
 		else if(Const.WIFI_CONNCHANGE.equals(action))
 		{

@@ -25,6 +25,7 @@
                 <action android:name="com.sdamsdam.widget.ACTION_EVENT" />
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
                 <action android:name="android.intent.action.BATTERY_LOW" />
+                <action android:name="android.intent.action.BATTERY_OKAY" />
                 <action android:name="android.intent.action.AIRPLANE_MODE" />
                 <action android:name="android.intent.action.HEADSET_PLUG" />
                 <action android:name="android.net.wifi.STATE_CHANGE" />
