@@ -3,6 +3,7 @@ package com.sdamsdam.widget;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.bluetooth.BluetoothAdapter;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -28,6 +29,7 @@ public class WidgetMain extends AppWidgetProvider
 	private static boolean isHeadset = false;
 	private static boolean isPlaneMode = false;
 	private static boolean isWifiConnected = false;
+	private static boolean isBluetoothActivated = false;
 
 	@Override
 	public void onEnabled(Context context)
@@ -67,6 +69,9 @@ public class WidgetMain extends AppWidgetProvider
 
 			if(isHeadset == true)
 				output = output.concat("Headset");
+			
+			if(isBluetoothActivated == true)
+				output = output.concat("Bluetooth");
 			
 			
 			Log.v(TAG, "Supposed output: "+output);
@@ -159,7 +164,7 @@ public class WidgetMain extends AppWidgetProvider
 			Log.v(TAG, "Battery Low");
 			isBatteryLow = true;
 		}
-		else if(Const.BATTERY_LOW.equals(action))
+		else if(Const.BATTERY_OKAY.equals(action))
 		{
 			Log.v(TAG, "Battery Okay");
 			isBatteryLow = false;
@@ -182,6 +187,15 @@ public class WidgetMain extends AppWidgetProvider
 
 			Log.v(TAG, "isPlaneMode: " + isPlaneMode);
 
+			AppWidgetManager manager = AppWidgetManager.getInstance(context);
+			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
+		}
+		else if(Const.BLUETOOTH_CHANGE.equals(action))
+		{
+			Log.v(TAG, "Bluetooth");
+			BluetoothAdapter mBTAdapter = BluetoothAdapter.getDefaultAdapter();
+			isBluetoothActivated = mBTAdapter.isEnabled();
+			
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
 			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
 		}

@@ -14,4 +14,5 @@ public class Const
 	public static final String PLANE_MODE		= "android.intent.action.AIRPLANE_MODE";
 	public static final String HEADSET_MODE		= "android.intent.action.HEADSET_PLUG";
 	public static final String WIFI_CONNCHANGE	= "android.net.wifi.STATE_CHANGE";
+	public static final String BLUETOOTH_CHANGE	= "android.bluetooth.adapter.action.STATE_CHANGED";
 }
