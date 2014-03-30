@@ -56,10 +56,9 @@ public class WidgetMain extends AppWidgetProvider
 			String output = "";
 			int appWidgetId = appWidgetIds[i];
 			RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
-
 			
 			if(isBatteryLow == true)
-				output = output.concat("Battery_Low ");
+				output = output.concat("Hungry ");
 			
 			if(isSMSNotRead == true)
 				output = output.concat("SMS ");
@@ -82,9 +81,9 @@ public class WidgetMain extends AppWidgetProvider
 			if(isUsbAttached == true)
 				output = output.concat("PC ");
 			
-			
 			Log.v(TAG, "Supposed output: "+output);
 			views.setTextViewText(R.id.textView1, output);
+			
 			appWidgetManager.updateAppWidget(appWidgetId, views);
 		}
 	}
@@ -136,17 +135,15 @@ public class WidgetMain extends AppWidgetProvider
 
 		for(int appWidgetId : appWidgetIds)
 			appWidgetManager.updateAppWidget(appWidgetId, views);
+		
+		// sendBroadcast(new Intent(Const.ACTION_EVENT));
 	}
 
 	@Override
 	public void onReceive(Context context, Intent intent)
 	{
 		super.onReceive(context, intent);
-
 		String action = intent.getAction();
-		Log.v(TAG, "onReceive() action = " + action);
-		
-		Log.d("HeadSetPlugInTest", "state: " + intent.getIntExtra("state", -1));
 
 		// Default Receiver
 		if(AppWidgetManager.ACTION_APPWIDGET_ENABLED.equals(action)) {}
@@ -172,11 +169,17 @@ public class WidgetMain extends AppWidgetProvider
 		{
 			Log.v(TAG, "Battery Low");
 			isBatteryLow = true;
+			
+			AppWidgetManager manager = AppWidgetManager.getInstance(context);
+			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
 		}
 		else if(Const.BATTERY_OKAY.equals(action))
 		{
 			Log.v(TAG, "Battery Okay");
 			isBatteryLow = false;
+			
+			AppWidgetManager manager = AppWidgetManager.getInstance(context);
+			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
 		}
 		else if(Const.WIFI_CONNCHANGE.equals(action))
 		{
@@ -246,6 +249,14 @@ public class WidgetMain extends AppWidgetProvider
 		{
 			isHeadset = true;
 			Log.v(TAG, "Headset Mode: " + isHeadset);
+			
+			AppWidgetManager manager = AppWidgetManager.getInstance(context);
+			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
+		}
+		else if(action.equals(Intent.ACTION_HEADSET_PLUG))
+		{
+			isHeadset = true;
+			Log.v(TAG, "Headset Mode2: " + isHeadset);
 			
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
 			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
