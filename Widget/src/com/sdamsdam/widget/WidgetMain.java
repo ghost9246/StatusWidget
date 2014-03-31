@@ -12,6 +12,7 @@ import android.database.Cursor;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
+import android.os.BatteryManager;
 import android.provider.Settings;
 import android.util.Log;
 import android.widget.ImageView;
@@ -165,18 +166,27 @@ public class WidgetMain extends AppWidgetProvider
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
 			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
 		}
-		else if(Const.BATTERY_LOW.equals(action))
-		{
-			Log.v(TAG, "Battery Low");
-			isBatteryLow = true;
+		else if(Const.BATTERY_CHANGED.equals(action))
+		{			
+			int bLevel = intent.getIntExtra("level", 0);
+			int chargeState = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
 			
-			AppWidgetManager manager = AppWidgetManager.getInstance(context);
-			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
-		}
-		else if(Const.BATTERY_OKAY.equals(action))
-		{
-			Log.v(TAG, "Battery Okay");
-			isBatteryLow = false;
+			Log.v(TAG, "Battery level changed: " + bLevel);
+			
+			if(bLevel < 20)
+				isBatteryLow = true;
+			else
+				isBatteryLow = false;
+
+		    switch (chargeState)
+		    {
+		        case BatteryManager.BATTERY_STATUS_CHARGING:
+		        case BatteryManager.BATTERY_STATUS_FULL:
+		            Log.v(TAG, "charging");
+		            break;
+		        default:
+		        	Log.v(TAG, "Not charging");
+		    }
 			
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
 			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
