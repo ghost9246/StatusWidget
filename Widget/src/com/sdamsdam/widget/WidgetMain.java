@@ -3,6 +3,7 @@ package com.sdamsdam.widget;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.bluetooth.BluetoothAdapter;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -23,11 +24,15 @@ public class WidgetMain extends AppWidgetProvider
 	private Context context;
 
 	private static boolean isDown = false;
+	
 	private static boolean isSMSNotRead = false;
 	private static boolean isBatteryLow = false;
 	private static boolean isHeadset = false;
 	private static boolean isPlaneMode = false;
 	private static boolean isWifiConnected = false;
+	private static boolean isBluetoothActivated = false;
+	private static boolean isPowerConnected = false;
+	private static boolean isUsbAttached = false;
 
 	@Override
 	public void onEnabled(Context context)
@@ -51,10 +56,9 @@ public class WidgetMain extends AppWidgetProvider
 			String output = "";
 			int appWidgetId = appWidgetIds[i];
 			RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
-
 			
 			if(isBatteryLow == true)
-				output = output.concat("Battery_Low ");
+				output = output.concat("Hungry ");
 			
 			if(isSMSNotRead == true)
 				output = output.concat("SMS ");
@@ -66,11 +70,20 @@ public class WidgetMain extends AppWidgetProvider
 				output = output.concat("Plane ");
 
 			if(isHeadset == true)
-				output = output.concat("Headset");
+				output = output.concat("Headset ");
 			
+			if(isBluetoothActivated == true)
+				output = output.concat("Bluetooth ");
+			
+			if(isPowerConnected == true)
+				output = output.concat("Charging ");
+			
+			if(isUsbAttached == true)
+				output = output.concat("PC ");
 			
 			Log.v(TAG, "Supposed output: "+output);
 			views.setTextViewText(R.id.textView1, output);
+			
 			appWidgetManager.updateAppWidget(appWidgetId, views);
 		}
 	}
@@ -122,17 +135,15 @@ public class WidgetMain extends AppWidgetProvider
 
 		for(int appWidgetId : appWidgetIds)
 			appWidgetManager.updateAppWidget(appWidgetId, views);
+		
+		// sendBroadcast(new Intent(Const.ACTION_EVENT));
 	}
 
 	@Override
 	public void onReceive(Context context, Intent intent)
-	{ 
+	{
 		super.onReceive(context, intent);
-
 		String action = intent.getAction();
-		Log.v(TAG, "onReceive() action = " + action);
-		
-		Log.d("HeadSetPlugInTest", "state: " + intent.getIntExtra("state", -1));
 
 		// Default Receiver
 		if(AppWidgetManager.ACTION_APPWIDGET_ENABLED.equals(action)) {}
@@ -158,11 +169,17 @@ public class WidgetMain extends AppWidgetProvider
 		{
 			Log.v(TAG, "Battery Low");
 			isBatteryLow = true;
+			
+			AppWidgetManager manager = AppWidgetManager.getInstance(context);
+			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
 		}
-		else if(Const.BATTERY_LOW.equals(action))
+		else if(Const.BATTERY_OKAY.equals(action))
 		{
 			Log.v(TAG, "Battery Okay");
 			isBatteryLow = false;
+			
+			AppWidgetManager manager = AppWidgetManager.getInstance(context);
+			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
 		}
 		else if(Const.WIFI_CONNCHANGE.equals(action))
 		{
@@ -185,10 +202,64 @@ public class WidgetMain extends AppWidgetProvider
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
 			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
 		}
-		else if(Intent.ACTION_HEADSET_PLUG.equals(action))
+		else if(Const.BLUETOOTH_CHANGE.equals(action))
 		{
-			isHeadset = !isHeadset;
+			Log.v(TAG, "Bluetooth");
+			BluetoothAdapter mBTAdapter = BluetoothAdapter.getDefaultAdapter();
+			isBluetoothActivated = mBTAdapter.isEnabled();
+			
+			AppWidgetManager manager = AppWidgetManager.getInstance(context);
+			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
+		}
+		else if(Const.POWER_CONNECT.equals(action))
+		{
+			Log.v(TAG, "Power Connected");
+			isPowerConnected = true;
+			
+			AppWidgetManager manager = AppWidgetManager.getInstance(context);
+			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
+		}
+		else if(Const.POWER_DISCONNECT.equals(action))
+		{
+			Log.v(TAG, "Power Disconnected");
+			isPowerConnected = false;
+			
+			AppWidgetManager manager = AppWidgetManager.getInstance(context);
+			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
+		}
+		
+		// not working
+		else if(Const.USB_ATTACH.equals(action))
+		{
+			Log.v(TAG, "USB Attached");
+			isUsbAttached = true;
+			
+			AppWidgetManager manager = AppWidgetManager.getInstance(context);
+			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
+		}
+		else if(Const.USB_DETACH.equals(action))
+		{
+			Log.v(TAG, "USB Detached");
+			isUsbAttached = false;
+			
+			AppWidgetManager manager = AppWidgetManager.getInstance(context);
+			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
+		}
+		else if(Const.HEADSET_MODE.equals(action))
+		{
+			isHeadset = true;
 			Log.v(TAG, "Headset Mode: " + isHeadset);
+			
+			AppWidgetManager manager = AppWidgetManager.getInstance(context);
+			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
+		}
+		else if(action.equals(Intent.ACTION_HEADSET_PLUG))
+		{
+			isHeadset = true;
+			Log.v(TAG, "Headset Mode2: " + isHeadset);
+			
+			AppWidgetManager manager = AppWidgetManager.getInstance(context);
+			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
 		}
 
 		// Action

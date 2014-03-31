@@ -3,4 +3,3 @@
     android:initialLayout="@layout/widget_layout"
     android:minHeight="146dp"
     android:minWidth="292dp" />
-<!-- android:updatePeriodMillis="10000" -->
