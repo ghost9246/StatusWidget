@@ -9,7 +9,7 @@ public class Const
 	public static final String ACTION_UP		= "com.sdamsdam.widget.ACTION_UP";
 	
 	public static final String SMS_RECEIVED		= "android.provider.Telephony.SMS_RECEIVED";
-	public static final String BATTERY_CHANGED	= "android.intent.action.BATTERY_CHANGED";
+	public static final String BATTERY_CHANGED	= "android.intent.action.ACTION_BATTERY_CHANGED";
 	public static final String PLANE_MODE		= "android.intent.action.AIRPLANE_MODE";
 	public static final String HEADSET_MODE		= "android.intent.ACTION_HEADSET_PLUG";
 	public static final String WIFI_CONNCHANGE	= "android.net.wifi.STATE_CHANGE";

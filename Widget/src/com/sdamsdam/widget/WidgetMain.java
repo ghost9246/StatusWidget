@@ -1,14 +1,15 @@
 package com.sdamsdam.widget;
 
+import android.content.Context;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.bluetooth.BluetoothAdapter;
 import android.content.ComponentName;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.media.AudioManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
@@ -23,9 +24,10 @@ public class WidgetMain extends AppWidgetProvider
 {
 	private static final String TAG = "sdamsdam";
 	private Context context;
+	private AudioManager manager;
 
 	private static boolean isDown = false;
-	
+
 	private static boolean isSMSNotRead = false;
 	private static boolean isBatteryLow = false;
 	private static boolean isHeadset = false;
@@ -57,13 +59,13 @@ public class WidgetMain extends AppWidgetProvider
 			String output = "";
 			int appWidgetId = appWidgetIds[i];
 			RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
-			
+
 			if(isBatteryLow == true)
 				output = output.concat("Hungry ");
-			
+
 			if(isSMSNotRead == true)
 				output = output.concat("SMS ");
-			
+
 			if(isWifiConnected == true)
 				output = output.concat("WiFi ");
 
@@ -72,19 +74,19 @@ public class WidgetMain extends AppWidgetProvider
 
 			if(isHeadset == true)
 				output = output.concat("Headset ");
-			
+
 			if(isBluetoothActivated == true)
 				output = output.concat("Bluetooth ");
-			
+
 			if(isPowerConnected == true)
 				output = output.concat("Charging ");
-			
+
 			if(isUsbAttached == true)
 				output = output.concat("PC ");
-			
+
 			Log.v(TAG, "Supposed output: "+output);
 			views.setTextViewText(R.id.textView1, output);
-			
+
 			appWidgetManager.updateAppWidget(appWidgetId, views);
 		}
 	}
@@ -110,6 +112,8 @@ public class WidgetMain extends AppWidgetProvider
 
 		Log.i(TAG, "======================= initUI() =======================");
 		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
+		
+		manager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
 
 		Intent eventIntent = new Intent(Const.ACTION_EVENT);
 		/*
@@ -131,13 +135,13 @@ public class WidgetMain extends AppWidgetProvider
 		/*
 		views.setOnClickPendingIntent(R.id.imageView1, movePIntent);
 		views.setOnClickPendingIntent(R.id.imageView1, downPIntent);
-		views.setOnClickPendingIntent(R.id.imageView1, upPIntent);
+		views.setOnClicaadsfkPendingIntent(R.id.imageView1, upPIntent);
 		 */
 
 		for(int appWidgetId : appWidgetIds)
 			appWidgetManager.updateAppWidget(appWidgetId, views);
-		
-		// sendBroadcast(new Intent(Const.ACTION_EVENT));
+
+		context.sendBroadcast(new Intent(Const.ACTION_EVENT));
 	}
 
 	@Override
@@ -145,6 +149,8 @@ public class WidgetMain extends AppWidgetProvider
 	{
 		super.onReceive(context, intent);
 		String action = intent.getAction();
+
+		Log.v(TAG, action);
 
 		// Default Receiver
 		if(AppWidgetManager.ACTION_APPWIDGET_ENABLED.equals(action)) {}
@@ -157,8 +163,7 @@ public class WidgetMain extends AppWidgetProvider
 		else if(AppWidgetManager.ACTION_APPWIDGET_DISABLED.equals(action)) {}
 
 		// Custom Recevier
-		// SMS Broadcast
-		else if (Const.SMS_RECEIVED.equals(action))
+		else if(Const.SMS_RECEIVED.equals(action))
 		{
 			Log.v(TAG, "SMS Received");
 
@@ -170,24 +175,24 @@ public class WidgetMain extends AppWidgetProvider
 		{			
 			int bLevel = intent.getIntExtra("level", 0);
 			int chargeState = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
-			
+
 			Log.v(TAG, "Battery level changed: " + bLevel);
-			
+
 			if(bLevel < 20)
 				isBatteryLow = true;
 			else
 				isBatteryLow = false;
 
-		    switch (chargeState)
-		    {
-		        case BatteryManager.BATTERY_STATUS_CHARGING:
-		        case BatteryManager.BATTERY_STATUS_FULL:
-		            Log.v(TAG, "charging");
-		            break;
-		        default:
-		        	Log.v(TAG, "Not charging");
-		    }
-			
+			switch (chargeState)
+			{
+			case BatteryManager.BATTERY_STATUS_CHARGING:
+			case BatteryManager.BATTERY_STATUS_FULL:
+				Log.v(TAG, "charging");
+				break;
+			default:
+				Log.v(TAG, "Not charging");
+			}
+
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
 			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
 		}
@@ -196,7 +201,7 @@ public class WidgetMain extends AppWidgetProvider
 			Log.v(TAG, "Wifi Connect state changed");
 			NetworkInfo netInfo = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
 			isWifiConnected = netInfo.isConnected();
-			
+
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
 			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
 		}
@@ -217,7 +222,7 @@ public class WidgetMain extends AppWidgetProvider
 			Log.v(TAG, "Bluetooth");
 			BluetoothAdapter mBTAdapter = BluetoothAdapter.getDefaultAdapter();
 			isBluetoothActivated = mBTAdapter.isEnabled();
-			
+
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
 			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
 		}
@@ -225,7 +230,7 @@ public class WidgetMain extends AppWidgetProvider
 		{
 			Log.v(TAG, "Power Connected");
 			isPowerConnected = true;
-			
+
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
 			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
 		}
@@ -233,17 +238,36 @@ public class WidgetMain extends AppWidgetProvider
 		{
 			Log.v(TAG, "Power Disconnected");
 			isPowerConnected = false;
-			
+
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
 			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
 		}
-		
+		else if(Const.HEADSET_MODE.equals(action))
+		{
+			Log.v(TAG, "Entering headset");
+			
+			int state = intent.getIntExtra("state", -1);
+            switch (state)
+            {
+            case 0:
+                Log.d(TAG, "Headset is unplugged");
+                break;
+            case 1:
+                Log.d(TAG, "Headset is plugged");
+                break;
+            default:
+                Log.d(TAG, "I have no idea what the headset state is");
+            }
+
+			AppWidgetManager manager = AppWidgetManager.getInstance(context);
+			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
+		}
 		// not working
 		else if(Const.USB_ATTACH.equals(action))
 		{
 			Log.v(TAG, "USB Attached");
 			isUsbAttached = true;
-			
+
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
 			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
 		}
@@ -251,23 +275,7 @@ public class WidgetMain extends AppWidgetProvider
 		{
 			Log.v(TAG, "USB Detached");
 			isUsbAttached = false;
-			
-			AppWidgetManager manager = AppWidgetManager.getInstance(context);
-			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
-		}
-		else if(Const.HEADSET_MODE.equals(action))
-		{
-			isHeadset = true;
-			Log.v(TAG, "Headset Mode: " + isHeadset);
-			
-			AppWidgetManager manager = AppWidgetManager.getInstance(context);
-			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
-		}
-		else if(action.equals(Intent.ACTION_HEADSET_PLUG))
-		{
-			isHeadset = true;
-			Log.v(TAG, "Headset Mode2: " + isHeadset);
-			
+
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
 			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
 		}
@@ -290,7 +298,7 @@ public class WidgetMain extends AppWidgetProvider
 		{
 			Toast.makeText(context, "MOVE", Toast.LENGTH_SHORT).show();
 		}
-		*/		
+		 */		
 		else if(Const.ACTION_EVENT.equals(action))
 		{
 			int textcode = (int)(Math.random()*5);
@@ -320,7 +328,7 @@ public class WidgetMain extends AppWidgetProvider
 			}
 
 			Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
-			
+
 			Check_SMSRead(context);
 
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
