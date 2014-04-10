@@ -15,24 +15,29 @@ public final class R {
         public static final int ic_launcher=0x7f020001;
         public static final int rammus=0x7f020002;
         public static final int rammus2=0x7f020003;
+        public static final int samsung=0x7f020004;
+        public static final int samsung_detail=0x7f020005;
     }
     public static final class id {
-        public static final int imageView1=0x7f060000;
-        public static final int textView1=0x7f060001;
+        public static final int imageView1=0x7f060001;
+        public static final int img=0x7f060000;
+        public static final int textView1=0x7f060002;
     }
     public static final class layout {
-        public static final int widget_layout=0x7f030000;
+        public static final int activity_main=0x7f030000;
+        public static final int widget_layout=0x7f030001;
     }
     public static final class string {
         public static final int app_name=0x7f050000;
-        public static final int slide1=0x7f050006;
-        public static final int slide2=0x7f050007;
-        public static final int slide3=0x7f050008;
-        public static final int touch1=0x7f050001;
-        public static final int touch2=0x7f050002;
-        public static final int touch3=0x7f050003;
-        public static final int touch4=0x7f050004;
-        public static final int touch5=0x7f050005;
+        public static final int layout_name=0x7f050001;
+        public static final int slide1=0x7f050007;
+        public static final int slide2=0x7f050008;
+        public static final int slide3=0x7f050009;
+        public static final int touch1=0x7f050002;
+        public static final int touch2=0x7f050003;
+        public static final int touch3=0x7f050004;
+        public static final int touch4=0x7f050005;
+        public static final int touch5=0x7f050006;
     }
     public static final class xml {
         public static final int widget_configuration=0x7f040000;

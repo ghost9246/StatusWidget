@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">쓰담쓰담 위젯</string>
+    <string name="layout_name">쓰담쓰담 레이아웃</string>
     
     <string name="touch1">뀨?</string>
     <string name="touch2">뀨잉?</string>

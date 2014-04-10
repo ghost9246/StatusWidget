@@ -16,6 +16,18 @@
     <application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
+        
+        <activity
+            android:name="com.sdamsdam.widget.Layout"
+            android:label="@string/layout_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        
         <receiver android:name=".WidgetMain" >
             <meta-data
                 android:name="android.appwidget.provider"
