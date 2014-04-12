@@ -8,12 +8,12 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.media.AudioManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
-import android.os.BatteryManager;
 import android.provider.Settings;
 import android.util.Log;
 import android.widget.ImageView;
@@ -36,6 +36,7 @@ public class WidgetMain extends AppWidgetProvider
 	private static boolean isBluetoothActivated = false;
 	private static boolean isPowerConnected = false;
 	private static boolean isUsbAttached = false;
+	private int nowBattery;
 
 	@Override
 	public void onEnabled(Context context)
@@ -113,7 +114,8 @@ public class WidgetMain extends AppWidgetProvider
 		Log.i(TAG, "======================= initUI() =======================");
 		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
 		
-		manager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
+		context.getApplicationContext().registerReceiver(this, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+		context.getApplicationContext().registerReceiver(this, new IntentFilter(Intent.ACTION_HEADSET_PLUG));
 
 		Intent eventIntent = new Intent(Const.ACTION_EVENT);
 		/*
@@ -142,6 +144,8 @@ public class WidgetMain extends AppWidgetProvider
 			appWidgetManager.updateAppWidget(appWidgetId, views);
 
 		context.sendBroadcast(new Intent(Const.ACTION_EVENT));
+		
+		Log.v(TAG, Integer.toString(nowBattery));
 	}
 
 	@Override
@@ -172,26 +176,14 @@ public class WidgetMain extends AppWidgetProvider
 			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
 		}
 		else if(Const.BATTERY_CHANGED.equals(action))
-		{			
+		{
 			int bLevel = intent.getIntExtra("level", 0);
-			int chargeState = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
-
 			Log.v(TAG, "Battery level changed: " + bLevel);
 
 			if(bLevel < 20)
 				isBatteryLow = true;
 			else
 				isBatteryLow = false;
-
-			switch (chargeState)
-			{
-			case BatteryManager.BATTERY_STATUS_CHARGING:
-			case BatteryManager.BATTERY_STATUS_FULL:
-				Log.v(TAG, "charging");
-				break;
-			default:
-				Log.v(TAG, "Not charging");
-			}
 
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
 			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
@@ -246,18 +238,11 @@ public class WidgetMain extends AppWidgetProvider
 		{
 			Log.v(TAG, "Entering headset");
 			
-			int state = intent.getIntExtra("state", -1);
-            switch (state)
-            {
-            case 0:
-                Log.d(TAG, "Headset is unplugged");
-                break;
-            case 1:
-                Log.d(TAG, "Headset is plugged");
-                break;
-            default:
-                Log.d(TAG, "I have no idea what the headset state is");
-            }
+			if(intent.getIntExtra("state", -1) == 1)
+                isHeadset = true;
+                
+			else
+                isHeadset = false;
 
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
 			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
