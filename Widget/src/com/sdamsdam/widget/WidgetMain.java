@@ -25,9 +25,11 @@ public class WidgetMain extends AppWidgetProvider
 	private static final String TAG = "sdamsdam";
 	private Context context;
 	private AudioManager manager;
+	
+	private AnimationThread aniThread = null;
+	private static AnimationObserver aniOb = null;
 
 	private static boolean isDown = false;
-
 	private static boolean isSMSNotRead = false;
 	private static boolean isBatteryLow = false;
 	private static boolean isHeadset = false;
@@ -36,6 +38,7 @@ public class WidgetMain extends AppWidgetProvider
 	private static boolean isBluetoothActivated = false;
 	private static boolean isPowerConnected = false;
 	private static boolean isUsbAttached = false;
+	private static boolean isThreadCreated = false;
 	private int nowBattery;
 
 	@Override
@@ -60,7 +63,26 @@ public class WidgetMain extends AppWidgetProvider
 			String output = "";
 			int appWidgetId = appWidgetIds[i];
 			RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
-
+			
+			// Show thread animation
+			Log.v(TAG, "isThreadCreated:" + isThreadCreated);
+			if(isThreadCreated == true)
+			{
+				switch(aniOb.GetFrameNo())
+				{
+				case 0:
+					views.setImageViewResource(R.id.imageView1, R.drawable.rammus);
+					break;
+					
+				case 1:
+					views.setImageViewResource(R.id.imageView1, R.drawable.rammus2);
+					break;
+				}
+				Log.v(TAG, "Frame #" + Integer.toString(aniOb.GetFrameNo()));
+				appWidgetManager.updateAppWidget(appWidgetId, views);
+			}
+			
+			// Show device's state
 			if(isBatteryLow == true)
 				output = output.concat("Hungry ");
 
@@ -114,9 +136,18 @@ public class WidgetMain extends AppWidgetProvider
 		Log.i(TAG, "======================= initUI() =======================");
 		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
 		
+		// Set additional intent filter (Headset & battery)
 		context.getApplicationContext().registerReceiver(this, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 		context.getApplicationContext().registerReceiver(this, new IntentFilter(Intent.ACTION_HEADSET_PLUG));
+		
+		// Create & run thread
+		aniThread = new AnimationThread();
+		aniOb = AnimationObserver.GetInstance();
+		aniThread.SetState(true);
+		aniThread.start();
+		isThreadCreated = true;
 
+		// Set event intent
 		Intent eventIntent = new Intent(Const.ACTION_EVENT);
 		/*
 		Intent moveIntent = new Intent(Const.ACTION_MOVE);
@@ -144,7 +175,6 @@ public class WidgetMain extends AppWidgetProvider
 			appWidgetManager.updateAppWidget(appWidgetId, views);
 
 		context.sendBroadcast(new Intent(Const.ACTION_EVENT));
-		
 		Log.v(TAG, Integer.toString(nowBattery));
 	}
 
@@ -154,7 +184,7 @@ public class WidgetMain extends AppWidgetProvider
 		super.onReceive(context, intent);
 		String action = intent.getAction();
 
-		Log.v(TAG, action);
+		Log.v(TAG, "action: " + action);
 
 		// Default Receiver
 		if(AppWidgetManager.ACTION_APPWIDGET_ENABLED.equals(action)) {}
