@@ -48,7 +48,7 @@ public class WidgetMain extends AppWidgetProvider
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
 			int[] appWidgetIds)
 	{
-		Log.i(TAG, "======================= onUpdate() =======================");
+		Log.i(TAG, "========== ============= onUpdate() =======================");
 
 		this.context = context;
 
