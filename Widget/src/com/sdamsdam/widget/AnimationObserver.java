@@ -1,7 +1,5 @@
 package com.sdamsdam.widget;
 
-import android.util.Log;
-
 public class AnimationObserver
 {
 	private static AnimationObserver instance = new AnimationObserver();
@@ -10,15 +8,12 @@ public class AnimationObserver
 	private AnimationObserver()
 	{
 		state = 0;
-		Log.v("sdamsdam", "AnimationObserver::AnimationObserver");
 	}
 	
 	public static AnimationObserver GetInstance()
 	{
 		if(instance == null)
 			instance = new AnimationObserver();
-		
-		Log.v("sdamsdam", "AnimationObserver::GetInstance");
 		
 		return instance;
 	}
