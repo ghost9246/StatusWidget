@@ -19,7 +19,13 @@ public class AnimationThread extends Thread
 
 	public void SetState(boolean state)
 	{
+		Log.v("sdamsdam", "Entering SetState");
+		ob.ResetFrame();
+		
+		Log.v("sdamsdam", "Reset Frame");
+		
 		isThreadRunning = state;
+		
 		Log.v("sdamsdam", "AnimationThread::SetState");
 	}
 
@@ -42,7 +48,7 @@ public class AnimationThread extends Thread
 				msg.what = 0;
 				handler.sendMessage(msg);
 
-				Thread.sleep(1000);
+				Thread.sleep(100);		// frame delay (ms)
 			}
 			catch(InterruptedException e)
 			{

@@ -29,7 +29,7 @@ public class WidgetMain extends AppWidgetProvider
 
 	// object variables
 	private Context context;	
-	private AnimationThread aniThread = null;
+	private static AnimationThread aniThread = null;
 	private static AnimationObserver aniOb = null;
 	private _ThreadHandler mMainHandler = null;
 
@@ -70,8 +70,7 @@ public class WidgetMain extends AppWidgetProvider
 			RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
 
 			// Show thread animation
-			Log.v(TAG, "isThreadCreated:" + isThreadCreated);
-			if(isThreadCreated == true)
+			if(isThreadCreated)
 			{
 				switch(aniOb.GetFrameNo())
 				{
@@ -80,7 +79,21 @@ public class WidgetMain extends AppWidgetProvider
 					break;
 
 				case 1:
+					views.setImageViewResource(R.id.imageView1, R.drawable.rammus1);
+					break;
+
+				case 2:
 					views.setImageViewResource(R.id.imageView1, R.drawable.rammus2);
+					break;
+
+				case 3:
+					views.setImageViewResource(R.id.imageView1, R.drawable.rammus3);
+					break;
+
+				case 4:
+					views.setImageViewResource(R.id.imageView1, R.drawable.rammus4);
+					aniThread.SetState(false);
+					// aniThread.stop();
 					break;
 				}
 				Log.v(TAG, "Frame #" + Integer.toString(aniOb.GetFrameNo()));
@@ -149,9 +162,7 @@ public class WidgetMain extends AppWidgetProvider
 		aniThread = new AnimationThread();
 		aniOb = AnimationObserver.GetInstance();
 		mMainHandler = new _ThreadHandler();
-		aniThread.SetState(true);
 		aniThread.SetThreadHandler(mMainHandler);
-		aniThread.start();
 		isThreadCreated = true;
 
 		// Set event intent
@@ -356,14 +367,21 @@ public class WidgetMain extends AppWidgetProvider
 			}
 
 			Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
-
 			Check_SMSRead(context);
+
+			Log.v(TAG, "Get ready for thread");
+			
+			if(aniThread == null)
+			{
+				Log.v(TAG, "damn");
+				aniThread = new AnimationThread();
+			}
+			
+			aniThread.SetState(true);
+			aniThread.start();
 
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
 			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
-
-			// solution A: check SMS/WiFi when screen on
-			// solution B: touch Rammus(temporary solution for user who DON'T turn off screen)
 		}
 	}
 
@@ -391,18 +409,12 @@ public class WidgetMain extends AppWidgetProvider
 	}
 
 	class _ThreadHandler extends Handler
-	{  
+	{
 		@Override
 		public void handleMessage(Message msg)
 		{
 			super.handleMessage(msg);
-
-			switch (msg.what)
-			{
-			case 0:
-				context.sendBroadcast(new Intent(Const.ACTION_SILENT));
-				break;
-			}
+			context.sendBroadcast(new Intent(Const.ACTION_SILENT));
 		}
 	};
 }

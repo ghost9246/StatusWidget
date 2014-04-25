@@ -14,9 +14,12 @@ public final class R {
         public static final int chatbox=0x7f020000;
         public static final int ic_launcher=0x7f020001;
         public static final int rammus=0x7f020002;
-        public static final int rammus2=0x7f020003;
-        public static final int samsung=0x7f020004;
-        public static final int samsung_detail=0x7f020005;
+        public static final int rammus1=0x7f020003;
+        public static final int rammus2=0x7f020004;
+        public static final int rammus3=0x7f020005;
+        public static final int rammus4=0x7f020006;
+        public static final int samsung=0x7f020007;
+        public static final int samsung_detail=0x7f020008;
     }
     public static final class id {
         public static final int imageView1=0x7f070000;

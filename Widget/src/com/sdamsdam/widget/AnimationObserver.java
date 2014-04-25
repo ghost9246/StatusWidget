@@ -25,9 +25,14 @@ public class AnimationObserver
 	
 	public void SetNextFrame()
 	{
-		if(state == 2)
+		if(state == 5)		// 5 = frame's amount
 			state = 0;
 		else
 			state++;
+	}
+	
+	public void ResetFrame()
+	{
+		state = 0;
 	}
 }
