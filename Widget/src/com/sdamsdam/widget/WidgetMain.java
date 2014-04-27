@@ -66,21 +66,23 @@ public class WidgetMain extends AppWidgetProvider
 			
 			// Show thread animation
 			Log.v(TAG, "isThreadCreated:" + isThreadCreated);
+			/*
 			if(isThreadCreated == true)
 			{
 				switch(aniOb.GetFrameNo())
 				{
 				case 0:
-					views.setImageViewResource(R.id.imageView1, R.layout.widget_layout);
+					views.setImageViewResource(viewId, srcId)
 					break;
 					
 				case 1:
-					views.setImageViewResource(R.id.imageView1, R.drawable.rammus2);
+					views.setImageViewResource(R.id.Linear1, R.drawable.rammus2);
 					break;
 				}
 				Log.v(TAG, "Frame #" + Integer.toString(aniOb.GetFrameNo()));
 				appWidgetManager.updateAppWidget(appWidgetId, views);
 			}
+			*/
 			
 			// Show device's state
 			if(isBatteryLow == true)
@@ -161,10 +163,10 @@ public class WidgetMain extends AppWidgetProvider
 		 */
 
 		// Set intent's event
-		views.setOnClickPendingIntent(R.id.imageView1, eventPIntent);
+		views.setOnClickPendingIntent(R.drawable.egg_38, eventPIntent);
 
 		/*
-		views.setOnClickPendingIntent(R.id.imageView1, movePIntent);
+		views.setOnClickPendingIntent(R.id. imageView1, movePIntent);
 		views.setOnClickPendingIntent(R.id.imageView1, downPIntent);
 		views.setOnClicaadsfkPendingIntent(R.id.imageView1, upPIntent);
 		 */

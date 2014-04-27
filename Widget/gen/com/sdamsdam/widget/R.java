@@ -11,43 +11,43 @@ public final class R {
     public static final class attr {
     }
     public static final class drawable {
-        public static final int chatbox=0x7f020000;
-        public static final int egg=0x7f020001;
-        public static final int egg_01=0x7f020002;
-        public static final int egg_02=0x7f020003;
-        public static final int egg_03=0x7f020004;
-        public static final int egg_04=0x7f020005;
-        public static final int egg_05=0x7f020006;
-        public static final int egg_06=0x7f020007;
-        public static final int egg_07=0x7f020008;
-        public static final int egg_08=0x7f020009;
-        public static final int egg_09=0x7f02000a;
-        public static final int egg_10=0x7f02000b;
-        public static final int egg_100=0x7f02000c;
-        public static final int egg_101=0x7f02000d;
-        public static final int egg_102=0x7f02000e;
-        public static final int egg_103=0x7f02000f;
-        public static final int egg_104=0x7f020010;
-        public static final int egg_105=0x7f020011;
-        public static final int egg_106=0x7f020012;
-        public static final int egg_107=0x7f020013;
-        public static final int egg_108=0x7f020014;
-        public static final int egg_109=0x7f020015;
-        public static final int egg_11=0x7f020016;
-        public static final int egg_110=0x7f020017;
-        public static final int egg_111=0x7f020018;
-        public static final int egg_112=0x7f020019;
-        public static final int egg_113=0x7f02001a;
-        public static final int egg_114=0x7f02001b;
-        public static final int egg_115=0x7f02001c;
-        public static final int egg_116=0x7f02001d;
-        public static final int egg_117=0x7f02001e;
-        public static final int egg_118=0x7f02001f;
-        public static final int egg_119=0x7f020020;
-        public static final int egg_12=0x7f020021;
-        public static final int egg_120=0x7f020022;
-        public static final int egg_121=0x7f020023;
-        public static final int egg_122=0x7f020024;
+        public static final int egg=0x7f020000;
+        public static final int egg_01=0x7f020001;
+        public static final int egg_02=0x7f020002;
+        public static final int egg_03=0x7f020003;
+        public static final int egg_04=0x7f020004;
+        public static final int egg_05=0x7f020005;
+        public static final int egg_06=0x7f020006;
+        public static final int egg_07=0x7f020007;
+        public static final int egg_08=0x7f020008;
+        public static final int egg_09=0x7f020009;
+        public static final int egg_10=0x7f02000a;
+        public static final int egg_100=0x7f02000b;
+        public static final int egg_101=0x7f02000c;
+        public static final int egg_102=0x7f02000d;
+        public static final int egg_103=0x7f02000e;
+        public static final int egg_104=0x7f02000f;
+        public static final int egg_105=0x7f020010;
+        public static final int egg_106=0x7f020011;
+        public static final int egg_107=0x7f020012;
+        public static final int egg_108=0x7f020013;
+        public static final int egg_109=0x7f020014;
+        public static final int egg_11=0x7f020015;
+        public static final int egg_110=0x7f020016;
+        public static final int egg_111=0x7f020017;
+        public static final int egg_112=0x7f020018;
+        public static final int egg_113=0x7f020019;
+        public static final int egg_114=0x7f02001a;
+        public static final int egg_115=0x7f02001b;
+        public static final int egg_116=0x7f02001c;
+        public static final int egg_117=0x7f02001d;
+        public static final int egg_118=0x7f02001e;
+        public static final int egg_119=0x7f02001f;
+        public static final int egg_12=0x7f020020;
+        public static final int egg_120=0x7f020021;
+        public static final int egg_121=0x7f020022;
+        public static final int egg_122=0x7f020023;
+        public static final int egg_123=0x7f020024;
         public static final int egg_13=0x7f020025;
         public static final int egg_14=0x7f020026;
         public static final int egg_15=0x7f020027;
@@ -157,6 +157,9 @@ public final class R {
         public static final int sony=0x7f02008f;
         public static final int sony_detail=0x7f020090;
         public static final int sony_expression=0x7f020091;
+    }
+    public static final class id {
+        public static final int Linear1=0x7f070000;
     }
     public static final class layout {
         public static final int widget_layout=0x7f030000;
