@@ -71,7 +71,7 @@ public class WidgetMain extends AppWidgetProvider
 				switch(aniOb.GetFrameNo())
 				{
 				case 0:
-					views.setImageViewResource(R.id.imageView1, R.drawable.rammus);
+					views.setImageViewResource(R.id.imageView1, R.layout.widget_layout);
 					break;
 					
 				case 1:
@@ -107,8 +107,6 @@ public class WidgetMain extends AppWidgetProvider
 			if(isUsbAttached == true)
 				output = output.concat("PC ");
 
-			Log.v(TAG, "Supposed output: "+output);
-			views.setTextViewText(R.id.textView1, output);
 
 			appWidgetManager.updateAppWidget(appWidgetId, views);
 		}
