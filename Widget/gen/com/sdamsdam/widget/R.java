@@ -12,11 +12,28 @@ public final class R {
     }
     public static final class drawable {
         public static final int chatbox=0x7f020000;
-        public static final int ic_launcher=0x7f020001;
-        public static final int rammus=0x7f020002;
-        public static final int rammus2=0x7f020003;
-        public static final int samsung=0x7f020004;
-        public static final int samsung_detail=0x7f020005;
+        public static final int egg=0x7f020001;
+        public static final int egg_detail=0x7f020002;
+        public static final int ic_launcher=0x7f020003;
+        public static final int iphone=0x7f020004;
+        public static final int iphone_detail=0x7f020005;
+        public static final int iphone_expressiion=0x7f020006;
+        public static final int lg=0x7f020007;
+        public static final int lg_detail=0x7f020008;
+        public static final int lg_expression=0x7f020009;
+        public static final int motorola_detail=0x7f02000a;
+        public static final int motorola_expression=0x7f02000b;
+        public static final int pantech=0x7f02000c;
+        public static final int pantech_detail=0x7f02000d;
+        public static final int pantech_expression=0x7f02000e;
+        public static final int rammus=0x7f02000f;
+        public static final int rammus2=0x7f020010;
+        public static final int samsung=0x7f020011;
+        public static final int samsung_detail=0x7f020012;
+        public static final int samsung_expression=0x7f020013;
+        public static final int sony=0x7f020014;
+        public static final int sony_detail=0x7f020015;
+        public static final int sony_expression=0x7f020016;
     }
     public static final class id {
         public static final int imageView1=0x7f070000;
