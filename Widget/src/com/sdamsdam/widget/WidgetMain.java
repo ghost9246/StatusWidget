@@ -1,24 +1,19 @@
 package com.sdamsdam.widget;
 
-import android.content.Context;
-import android.app.PendingIntent;
-import android.appwidget.AppWidgetManager;
-import android.appwidget.AppWidgetProvider;
-import android.bluetooth.BluetoothAdapter;
-import android.content.ComponentName;
-import android.content.ContentResolver;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.database.Cursor;
-import android.media.AudioManager;
-import android.net.NetworkInfo;
-import android.net.Uri;
-import android.net.wifi.WifiManager;
-import android.provider.Settings;
-import android.util.Log;
-import android.widget.ImageView;
-import android.widget.RemoteViews;
-import android.widget.Toast;
+import android.annotation.*;
+import android.app.*;
+import android.appwidget.*;
+import android.bluetooth.*;
+import android.content.*;
+import android.database.*;
+import android.graphics.*;
+import android.media.*;
+import android.net.*;
+import android.net.wifi.*;
+import android.os.*;
+import android.provider.*;
+import android.util.*;
+import android.widget.*;
 
 public class WidgetMain extends AppWidgetProvider
 {
@@ -40,6 +35,9 @@ public class WidgetMain extends AppWidgetProvider
 	private static boolean isUsbAttached = false;
 	private static boolean isThreadCreated = false;
 	private int nowBattery;
+	
+	
+	
 
 	@Override
 	public void onEnabled(Context context)
@@ -48,70 +46,118 @@ public class WidgetMain extends AppWidgetProvider
 		super.onEnabled(context);
 	}
 
-	@Override
+	
+	
+	
+	
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
 			int[] appWidgetIds)
 	{
-		Log.i(TAG, "========== ============= onUpdate() =======================");
-
+		
+		
 		this.context = context;
 
-		super.onUpdate(context, appWidgetManager, appWidgetIds);
-
-		for(int i=0; i<appWidgetIds.length; i++)
-		{
-			String output = "";
-			int appWidgetId = appWidgetIds[i];
-			RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
+		
+			RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
+					R.layout.gridview_appwidget);
 			
-			// Show thread animation
-			Log.v(TAG, "isThreadCreated:" + isThreadCreated);
-			/*
-			if(isThreadCreated == true)
-			{
-				switch(aniOb.GetFrameNo())
-				{
-				case 0:
-					views.setImageViewResource(viewId, srcId)
-					break;
+			
+				// GridView  making the intent indicating the service that you want to bind the data to the
+				Intent intent = new Intent(context, GridViewAppWidgetRemoteViewsService.class);
+				intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
+				Uri intentUri = Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME));
+				intent.setData(intentUri);
+
+				// GridView と GridViewAppWidgetRemoteViewsService を結びつける
+				remoteViews.setRemoteAdapter(appWidgetIds[0],R.id.messages_gridview, intent);
+ 
+				// messages_gridview にデータがなかった時表示するビューを empty_textview に設定
+				
+				remoteViews.setEmptyView(R.id.messages_gridview, R.id.empty_textview);
+				
+				Log.v(TAG, "action3");
+
+			
+				// GridView의 각 아이템 클릭할때의 인텐트 정하기
+				
+				Intent templateIntent1 = new Intent(Const.ACTION_EVENT);
+				//Intent templateIntent2 = new Intent(context, HelloActivity.class);
+				
+						
+				PendingIntent template1 = 
+						PendingIntent.getBroadcast(context, 0, templateIntent1, PendingIntent.FLAG_UPDATE_CURRENT);
+				
+				/*
+				PendingIntent template2 = PendingIntent.getActivity(context, 0,
+						templateIntent2, PendingIntent.FLAG_UPDATE_CURRENT);
+					    */
 					
-				case 1:
-					views.setImageViewResource(R.id.Linear1, R.drawable.rammus2);
-					break;
-				}
-				Log.v(TAG, "Frame #" + Integer.toString(aniOb.GetFrameNo()));
-				appWidgetManager.updateAppWidget(appWidgetId, views);
-			}
-			*/
+				remoteViews.setPendingIntentTemplate(R.id.messages_gridview, template1);
+				
+		
+
+			appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);
 			
-			// Show device's state
-			if(isBatteryLow == true)
-				output = output.concat("Hungry ");
 
-			if(isSMSNotRead == true)
-				output = output.concat("SMS ");
+			/*
+				for(int i=0; i<appWidgetIds.length; i++)
+				{
+					String output = "";
+					int appWidgetId = appWidgetIds[i];
+					// Show device's state
+					if(isBatteryLow == true)
+						output = output.concat("Hungry ");
 
-			if(isWifiConnected == true)
-				output = output.concat("WiFi ");
+					if(isSMSNotRead == true)
+						output = output.concat("SMS ");
 
-			if(isPlaneMode == true)
-				output = output.concat("Plane ");
+					if(isWifiConnected == true)
+						output = output.concat("WiFi ");
 
-			if(isHeadset == true)
-				output = output.concat("Headset ");
+					if(isPlaneMode == true)
+						output = output.concat("Plane ");
 
-			if(isBluetoothActivated == true)
-				output = output.concat("Bluetooth ");
+					if(isHeadset == true)
+						output = output.concat("Headset ");
 
-			if(isPowerConnected == true)
-				output = output.concat("Charging ");
+					if(isBluetoothActivated == true)
+						output = output.concat("Bluetooth ");
 
-			if(isUsbAttached == true)
-				output = output.concat("PC ");
+					if(isPowerConnected == true)
+						output = output.concat("Charging ");
 
+					if(isUsbAttached == true)
+						output = output.concat("PC ");
 
-			appWidgetManager.updateAppWidget(appWidgetId, views);
-		}
+					
+					
+				}
+				*/
+					
+				/*
+				
+				// Show thread animation
+			
+				if(isThreadCreated == true)
+				{
+					switch(aniOb.GetFrameNo())
+					{
+					case 0:
+						remoteViews.setImageViewResource(R.layout.gridview_appwidget, R.id.Linear1);
+						break;
+						
+					case 1:
+						remoteViews.setImageViewResource(R.layout.gridview_appwidget, R.id.Linear1);
+						break;
+					}
+					Log.v(TAG, "Frame #" + Integer.toString(aniOb.GetFrameNo()));
+					appWidgetManager.updateAppWidget(appWidgetId, views);
+				}
+					
+					*/
+	
 	}
 
 	@Override
@@ -128,13 +174,15 @@ public class WidgetMain extends AppWidgetProvider
 		super.onDisabled(context);
 	}
 
+	
+	
 	public void initUI(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
 	{
 		this.context = context;
 		ImageView iv = new ImageView(context);
 
 		Log.i(TAG, "======================= initUI() =======================");
-		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
+		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.gridview_appwidget);
 		
 		// Set additional intent filter (Headset & battery)
 		context.getApplicationContext().registerReceiver(this, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
@@ -149,27 +197,15 @@ public class WidgetMain extends AppWidgetProvider
 
 		// Set event intent
 		Intent eventIntent = new Intent(Const.ACTION_EVENT);
-		/*
-		Intent moveIntent = new Intent(Const.ACTION_MOVE);
-		Intent downIntent = new Intent(Const.ACTION_DOWN);
-		Intent upIntent = new Intent(Const.ACTION_UP);
-		 */
-
+	
 		PendingIntent eventPIntent = PendingIntent.getBroadcast(context, 0, eventIntent, 0);
-		/*
-		PendingIntent movePIntent = PendingIntent.getBroadcast(context, 0, moveIntent, 0);
-		PendingIntent downPIntent = PendingIntent.getBroadcast(context, 0, downIntent, 0);
-		PendingIntent upPIntent = PendingIntent.getBroadcast(context, 0, upIntent, 0);
-		 */
+	
 
+		
 		// Set intent's event
-		views.setOnClickPendingIntent(R.drawable.egg_38, eventPIntent);
+		//views.setOnClickPendingIntent(R.id.Linear1, eventPIntent);
 
-		/*
-		views.setOnClickPendingIntent(R.id. imageView1, movePIntent);
-		views.setOnClickPendingIntent(R.id.imageView1, downPIntent);
-		views.setOnClicaadsfkPendingIntent(R.id.imageView1, upPIntent);
-		 */
+	
 
 		for(int appWidgetId : appWidgetIds)
 			appWidgetManager.updateAppWidget(appWidgetId, views);
@@ -295,29 +331,14 @@ public class WidgetMain extends AppWidgetProvider
 			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
 		}
 
-		// Action
-		/*
-		else if(Const.ACTION_DOWN.equals(action))
-		{
-			Toast.makeText(context, "DOWN", Toast.LENGTH_SHORT).show();
-			isDown = true;
-		}
-		else if(Const.ACTION_UP.equals(action))
-		{
-			if(isDown)
-				Toast.makeText(context, "UPUP", Toast.LENGTH_SHORT).show();
-			else
-				Toast.makeText(context, "UPDOWN", Toast.LENGTH_SHORT).show();
-		}
-		else if(Const.ACTION_MOVE.equals(action))
-		{
-			Toast.makeText(context, "MOVE", Toast.LENGTH_SHORT).show();
-		}
-		 */		
+		
 		else if(Const.ACTION_EVENT.equals(action))
 		{
 			int textcode = (int)(Math.random()*5);
 			String text = null;
+			
+			String extraName = intent.getStringExtra("EXTRA_NAME");
+			
 
 			switch(textcode)
 			{
@@ -342,7 +363,7 @@ public class WidgetMain extends AppWidgetProvider
 				break;
 			}
 
-			Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+			Toast.makeText(context, extraName, Toast.LENGTH_SHORT).show();
 
 			Check_SMSRead(context);
 

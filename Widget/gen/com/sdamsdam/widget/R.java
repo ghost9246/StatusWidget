@@ -8,7 +8,20 @@
 package com.sdamsdam.widget;
 
 public final class R {
+    public static final class array {
+        public static final int shouts=0x7f050000;
+    }
     public static final class attr {
+    }
+    public static final class dimen {
+        public static final int gridview_height=0x7f060003;
+        public static final int gridview_width=0x7f060002;
+        public static final int init_height=0x7f060001;
+        /**  Default screen margins, per the Android Design guidelines. 
+         */
+        public static final int init_width=0x7f060000;
+        public static final int item_height=0x7f060005;
+        public static final int item_width=0x7f060004;
     }
     public static final class drawable {
         public static final int egg=0x7f020000;
@@ -137,35 +150,43 @@ public final class R {
         public static final int egg_99=0x7f02007b;
         public static final int egg_all=0x7f02007c;
         public static final int egg_detail=0x7f02007d;
-        public static final int ic_launcher=0x7f02007e;
-        public static final int iphone=0x7f02007f;
-        public static final int iphone_detail=0x7f020080;
-        public static final int iphone_expressiion=0x7f020081;
-        public static final int lg=0x7f020082;
-        public static final int lg_detail=0x7f020083;
-        public static final int lg_expression=0x7f020084;
-        public static final int motorola_detail=0x7f020085;
-        public static final int motorola_expression=0x7f020086;
-        public static final int pantech=0x7f020087;
-        public static final int pantech_detail=0x7f020088;
-        public static final int pantech_expression=0x7f020089;
-        public static final int rammus=0x7f02008a;
-        public static final int rammus2=0x7f02008b;
-        public static final int samsung=0x7f02008c;
-        public static final int samsung_detail=0x7f02008d;
-        public static final int samsung_expression=0x7f02008e;
-        public static final int sony=0x7f02008f;
-        public static final int sony_detail=0x7f020090;
-        public static final int sony_expression=0x7f020091;
+        public static final int home=0x7f02007e;
+        public static final int ic_launcher=0x7f02007f;
+        public static final int iphone=0x7f020080;
+        public static final int iphone_detail=0x7f020081;
+        public static final int iphone_expressiion=0x7f020082;
+        public static final int lg=0x7f020083;
+        public static final int lg_detail=0x7f020084;
+        public static final int lg_expression=0x7f020085;
+        public static final int motorola_detail=0x7f020086;
+        public static final int motorola_expression=0x7f020087;
+        public static final int pantech=0x7f020088;
+        public static final int pantech_detail=0x7f020089;
+        public static final int pantech_expression=0x7f02008a;
+        public static final int personal=0x7f02008b;
+        public static final int rammus=0x7f02008c;
+        public static final int rammus2=0x7f02008d;
+        public static final int samsung=0x7f02008e;
+        public static final int samsung_detail=0x7f02008f;
+        public static final int samsung_expression=0x7f020090;
+        public static final int sony=0x7f020091;
+        public static final int sony_detail=0x7f020092;
+        public static final int sony_expression=0x7f020093;
     }
     public static final class id {
-        public static final int Linear1=0x7f070000;
+        public static final int eggparts=0x7f090003;
+        public static final int empty_textview=0x7f090002;
+        public static final int frame=0x7f090000;
+        public static final int messages_gridview=0x7f090001;
     }
     public static final class layout {
-        public static final int widget_layout=0x7f030000;
+        public static final int gridview_appwidget=0x7f030000;
+        public static final int gridview_item=0x7f030001;
+        public static final int mainlayout=0x7f030002;
     }
     public static final class string {
-        public static final int app_name=0x7f050000;
+        public static final int app_name=0x7f070000;
+        public static final int numColumns=0x7f070001;
     }
     public static final class style {
         /** 
@@ -189,11 +210,11 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f060000;
+        public static final int AppBaseTheme=0x7f080000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f060001;
+        public static final int AppTheme=0x7f080001;
     }
     public static final class xml {
         public static final int widget_configuration=0x7f040000;
