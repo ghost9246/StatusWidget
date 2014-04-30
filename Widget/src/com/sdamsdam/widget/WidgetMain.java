@@ -80,7 +80,7 @@ public class WidgetMain extends AppWidgetProvider
 				Log.v(TAG, "action3");
 
 			
-				// GridView의 각 아이템 클릭할때의 인텐트 정하기
+				// GridView의 각 아이템 클릭할때의 인텐트 정하기 
 				
 				Intent templateIntent1 = new Intent(Const.ACTION_EVENT);
 				//Intent templateIntent2 = new Intent(context, HelloActivity.class);
