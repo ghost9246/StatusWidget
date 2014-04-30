@@ -24,6 +24,7 @@ public final class R {
         public static final int item_width=0x7f060004;
     }
     public static final class drawable {
+<<<<<<< HEAD
         public static final int egg=0x7f020000;
         public static final int egg_01=0x7f020001;
         public static final int egg_02=0x7f020002;
@@ -172,6 +173,17 @@ public final class R {
         public static final int sony=0x7f020091;
         public static final int sony_detail=0x7f020092;
         public static final int sony_expression=0x7f020093;
+=======
+        public static final int chatbox=0x7f020000;
+        public static final int ic_launcher=0x7f020001;
+        public static final int rammus=0x7f020002;
+        public static final int rammus1=0x7f020003;
+        public static final int rammus2=0x7f020004;
+        public static final int rammus3=0x7f020005;
+        public static final int rammus4=0x7f020006;
+        public static final int samsung=0x7f020007;
+        public static final int samsung_detail=0x7f020008;
+>>>>>>> origin/Animation-branch-0.1
     }
     public static final class id {
         public static final int eggparts=0x7f090003;

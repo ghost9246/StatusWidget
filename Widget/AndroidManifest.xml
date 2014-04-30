@@ -27,6 +27,7 @@
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="com.sdamsdam.widget.ACTION_EVENT" />
+                <action android:name="com.sdamsdam.widget.ACTION_SILENT" />
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
                 <action android:name="android.intent.action.BATTERY_CHANGED" />
                 <action android:name="android.intent.action.AIRPLANE_MODE" />
