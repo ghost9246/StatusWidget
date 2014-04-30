@@ -14,6 +14,8 @@ import android.media.AudioManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.Settings;
 import android.util.Log;
 import android.widget.ImageView;
@@ -22,13 +24,16 @@ import android.widget.Toast;
 
 public class WidgetMain extends AppWidgetProvider
 {
+	// constant variables
 	private static final String TAG = "sdamsdam";
-	private Context context;
-	private AudioManager manager;
-	
-	private AnimationThread aniThread = null;
-	private static AnimationObserver aniOb = null;
 
+	// object variables
+	private Context context;	
+	private static AnimationThread aniThread = null;
+	private static AnimationObserver aniOb = null;
+	private _ThreadHandler mMainHandler = null;
+
+	// other variables
 	private static boolean isDown = false;
 	private static boolean isSMSNotRead = false;
 	private static boolean isBatteryLow = false;
@@ -63,25 +68,38 @@ public class WidgetMain extends AppWidgetProvider
 			String output = "";
 			int appWidgetId = appWidgetIds[i];
 			RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
-			
+
 			// Show thread animation
-			Log.v(TAG, "isThreadCreated:" + isThreadCreated);
-			if(isThreadCreated == true)
+			if(isThreadCreated)
 			{
 				switch(aniOb.GetFrameNo())
 				{
 				case 0:
 					views.setImageViewResource(R.id.imageView1, R.drawable.rammus);
 					break;
-					
+
 				case 1:
+					views.setImageViewResource(R.id.imageView1, R.drawable.rammus1);
+					break;
+
+				case 2:
 					views.setImageViewResource(R.id.imageView1, R.drawable.rammus2);
+					break;
+
+				case 3:
+					views.setImageViewResource(R.id.imageView1, R.drawable.rammus3);
+					break;
+
+				case 4:
+					views.setImageViewResource(R.id.imageView1, R.drawable.rammus4);
+					aniThread.SetState(false);
+					// aniThread.stop();
 					break;
 				}
 				Log.v(TAG, "Frame #" + Integer.toString(aniOb.GetFrameNo()));
 				appWidgetManager.updateAppWidget(appWidgetId, views);
 			}
-			
+
 			// Show device's state
 			if(isBatteryLow == true)
 				output = output.concat("Hungry ");
@@ -135,16 +153,16 @@ public class WidgetMain extends AppWidgetProvider
 
 		Log.i(TAG, "======================= initUI() =======================");
 		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
-		
+
 		// Set additional intent filter (Headset & battery)
 		context.getApplicationContext().registerReceiver(this, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 		context.getApplicationContext().registerReceiver(this, new IntentFilter(Intent.ACTION_HEADSET_PLUG));
-		
+
 		// Create & run thread
 		aniThread = new AnimationThread();
 		aniOb = AnimationObserver.GetInstance();
-		aniThread.SetState(true);
-		aniThread.start();
+		mMainHandler = new _ThreadHandler();
+		aniThread.SetThreadHandler(mMainHandler);
 		isThreadCreated = true;
 
 		// Set event intent
@@ -174,7 +192,7 @@ public class WidgetMain extends AppWidgetProvider
 		for(int appWidgetId : appWidgetIds)
 			appWidgetManager.updateAppWidget(appWidgetId, views);
 
-		context.sendBroadcast(new Intent(Const.ACTION_EVENT));
+		context.sendBroadcast(new Intent(Const.ACTION_SILENT));
 		Log.v(TAG, Integer.toString(nowBattery));
 	}
 
@@ -197,6 +215,12 @@ public class WidgetMain extends AppWidgetProvider
 		else if(AppWidgetManager.ACTION_APPWIDGET_DISABLED.equals(action)) {}
 
 		// Custom Recevier
+		else if(Const.ACTION_SILENT.equals(action))
+		{
+			Check_SMSRead(context);
+			AppWidgetManager manager = AppWidgetManager.getInstance(context);
+			initUI(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
+		}
 		else if(Const.SMS_RECEIVED.equals(action))
 		{
 			Log.v(TAG, "SMS Received");
@@ -267,12 +291,12 @@ public class WidgetMain extends AppWidgetProvider
 		else if(Const.HEADSET_MODE.equals(action))
 		{
 			Log.v(TAG, "Entering headset");
-			
+
 			if(intent.getIntExtra("state", -1) == 1)
-                isHeadset = true;
-                
+				isHeadset = true;
+
 			else
-                isHeadset = false;
+				isHeadset = false;
 
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
 			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
@@ -343,14 +367,21 @@ public class WidgetMain extends AppWidgetProvider
 			}
 
 			Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
-
 			Check_SMSRead(context);
+
+			Log.v(TAG, "Get ready for thread");
+			
+			if(aniThread == null)
+			{
+				Log.v(TAG, "damn");
+				aniThread = new AnimationThread();
+			}
+			
+			aniThread.SetState(true);
+			aniThread.start();
 
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
 			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
-
-			// solution A: check SMS/WiFi when screen on
-			// solution B: touch Rammus(temporary solution for user who DON'T turn off screen)
 		}
 	}
 
@@ -376,4 +407,14 @@ public class WidgetMain extends AppWidgetProvider
 		else
 			isSMSNotRead = true;
 	}
+
+	class _ThreadHandler extends Handler
+	{
+		@Override
+		public void handleMessage(Message msg)
+		{
+			super.handleMessage(msg);
+			context.sendBroadcast(new Intent(Const.ACTION_SILENT));
+		}
+	};
 }
