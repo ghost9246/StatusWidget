@@ -1,6 +1,6 @@
 package com.sdamsdam.widget;
 
-<<<<<<< HEAD
+
 import android.annotation.*;
 import android.app.*;
 import android.appwidget.*;
@@ -15,7 +15,7 @@ import android.os.*;
 import android.provider.*;
 import android.util.*;
 import android.widget.*;
-=======
+
 import android.content.Context;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -37,7 +37,6 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RemoteViews;
 import android.widget.Toast;
->>>>>>> origin/Animation-branch-0.1
 
 public class WidgetMain extends AppWidgetProvider
 {
@@ -106,29 +105,6 @@ public class WidgetMain extends AppWidgetProvider
 				
 				Log.v(TAG, "action3");
 
-<<<<<<< HEAD
-			
-				// GridView의 각 아이템 클릭할때의 인텐트 정하기
-				
-				Intent templateIntent1 = new Intent(Const.ACTION_EVENT);
-				//Intent templateIntent2 = new Intent(context, HelloActivity.class);
-				
-						
-				PendingIntent template1 = 
-						PendingIntent.getBroadcast(context, 0, templateIntent1, PendingIntent.FLAG_UPDATE_CURRENT);
-				
-				/*
-				PendingIntent template2 = PendingIntent.getActivity(context, 0,
-						templateIntent2, PendingIntent.FLAG_UPDATE_CURRENT);
-					    */
-					
-				remoteViews.setPendingIntentTemplate(R.id.messages_gridview, template1);
-				
-		
-
-			appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);
-			
-=======
 		for(int i=0; i<appWidgetIds.length; i++)
 		{
 			String output = "";
@@ -169,7 +145,7 @@ public class WidgetMain extends AppWidgetProvider
 			// Show device's state
 			if(isBatteryLow == true)
 				output = output.concat("Hungry ");
->>>>>>> origin/Animation-branch-0.1
+
 
 			/*
 				for(int i=0; i<appWidgetIds.length; i++)
@@ -252,13 +228,9 @@ public class WidgetMain extends AppWidgetProvider
 		ImageView iv = new ImageView(context);
 
 		Log.i(TAG, "======================= initUI() =======================");
-<<<<<<< HEAD
-		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.gridview_appwidget);
-		
-=======
+
 		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
 
->>>>>>> origin/Animation-branch-0.1
 		// Set additional intent filter (Headset & battery)
 		context.getApplicationContext().registerReceiver(this, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 		context.getApplicationContext().registerReceiver(this, new IntentFilter(Intent.ACTION_HEADSET_PLUG));
@@ -444,12 +416,9 @@ public class WidgetMain extends AppWidgetProvider
 				break;
 			}
 
-<<<<<<< HEAD
-			Toast.makeText(context, extraName, Toast.LENGTH_SHORT).show();
 
-=======
 			Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
->>>>>>> origin/Animation-branch-0.1
+
 			Check_SMSRead(context);
 
 			Log.v(TAG, "Get ready for thread");
