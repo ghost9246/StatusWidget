@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:initialLayout="@layout/gridview_appwidget"
-    android:minHeight="@dimen/init_height"
-    android:minWidth="@dimen/init_width" 
-    android:updatePeriodMillis="0"
-    />
+    android:initialLayout="@layout/widget_layout"
+    android:minHeight="146dp"
+    android:minWidth="292dp" />

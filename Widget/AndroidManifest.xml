@@ -40,26 +40,6 @@
                 <action android:name="android.hardware.usb.action.USB_ACCESSORY_DETACHED" />
             </intent-filter>
         </receiver>
-        
-        
-        <service
-			android:name=".GridViewAppWidgetRemoteViewsService"
-			android:permission="android.permission.BIND_REMOTEVIEWS"
-			android:exported="false"
-		/>
-        
-        
-        <activity
-            android:name=".MainLayout"
-            android:label="상세정보" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                
-            </intent-filter>
-        </activity>
-        
-        
-        
     </application>
 
 </manifest>
