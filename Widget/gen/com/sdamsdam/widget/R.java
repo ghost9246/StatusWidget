@@ -9,7 +9,9 @@ package com.sdamsdam.widget;
 
 public final class R {
     public static final class array {
+        public static final int nation=0x7f050001;
         public static final int shouts=0x7f050000;
+        public static final int vintage=0x7f050002;
     }
     public static final class attr {
     }
@@ -166,23 +168,50 @@ public final class R {
         public static final int personal=0x7f02008b;
         public static final int rammus=0x7f02008c;
         public static final int rammus2=0x7f02008d;
-        public static final int samsung=0x7f02008e;
-        public static final int samsung_detail=0x7f02008f;
-        public static final int samsung_expression=0x7f020090;
-        public static final int sony=0x7f020091;
-        public static final int sony_detail=0x7f020092;
-        public static final int sony_expression=0x7f020093;
+        public static final int reset=0x7f02008e;
+        public static final int samsung=0x7f02008f;
+        public static final int samsung_detail=0x7f020090;
+        public static final int samsung_expression=0x7f020091;
+        public static final int sony=0x7f020092;
+        public static final int sony_detail=0x7f020093;
+        public static final int sony_expression=0x7f020094;
     }
     public static final class id {
+        public static final int cancled=0x7f09001c;
+        public static final int dry1=0x7f090016;
+        public static final int dry2=0x7f090017;
+        public static final int dry3=0x7f090018;
+        public static final int dry4=0x7f090019;
+        public static final int dry5=0x7f09001a;
         public static final int eggparts=0x7f090003;
         public static final int empty_textview=0x7f090002;
+        public static final int for1=0x7f090013;
+        public static final int for2=0x7f090014;
+        public static final int for3=0x7f090015;
         public static final int frame=0x7f090000;
+        public static final int input01=0x7f090005;
+        public static final int input02=0x7f090006;
+        public static final int kind1=0x7f09000d;
+        public static final int kind2=0x7f09000e;
+        public static final int kind3=0x7f09000f;
+        public static final int kind4=0x7f090010;
+        public static final int kind5=0x7f090011;
+        public static final int kind6=0x7f090012;
         public static final int messages_gridview=0x7f090001;
+        public static final int myspinner1=0x7f090008;
+        public static final int myspinner2=0x7f09000a;
+        public static final int myspinner3=0x7f09000b;
+        public static final int ok=0x7f09001b;
+        public static final int reset1=0x7f090007;
+        public static final int reset2=0x7f090009;
+        public static final int reset3=0x7f09000c;
+        public static final int setbutton=0x7f090004;
     }
     public static final class layout {
         public static final int gridview_appwidget=0x7f030000;
         public static final int gridview_item=0x7f030001;
         public static final int mainlayout=0x7f030002;
+        public static final int settingpage=0x7f030003;
     }
     public static final class string {
         public static final int app_name=0x7f070000;
