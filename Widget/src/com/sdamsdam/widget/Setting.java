@@ -10,8 +10,6 @@ import android.view.*;
 import android.widget.*;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-import com.sdamsdam.widget.StopWatch.ThreadTime;
-
 
 
 
