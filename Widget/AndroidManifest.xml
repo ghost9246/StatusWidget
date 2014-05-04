@@ -60,6 +60,13 @@
             android:theme="@android:style/Theme.Holo.Light.NoActionBar" />
         
         
+        <activity
+            android:label="@string/app_name"
+            android:name=".StopWatch" >
+            
+        </activity>
+        
+        
     </application>
 
     

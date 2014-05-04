@@ -7,6 +7,9 @@
     android:orientation="vertical"
     
      android:background="#FFffffff">
+     
+
+    
 
 
 <LinearLayout     
@@ -15,7 +18,13 @@
     android:padding="20dip"
     android:orientation="vertical"    
       >
-
+    
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:textSize="30dp"
+        android:gravity="center"
+        android:id="@+id/time" /> 
     
     <TextView    
         android:layout_width="wrap_content"

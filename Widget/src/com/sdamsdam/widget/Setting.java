@@ -4,13 +4,13 @@ package com.sdamsdam.widget;
 import android.annotation.*;
 import android.app.*;
 import android.content.*;
-import android.graphics.*;
-import android.graphics.drawable.*;
 import android.os.*;
 import android.util.*;
 import android.view.*;
 import android.widget.*;
 import android.widget.AdapterView.OnItemSelectedListener;
+
+import com.sdamsdam.widget.StopWatch.ThreadTime;
 
 
 
@@ -22,6 +22,13 @@ public class Setting extends Activity {
 	private static final String TAG = "Setting_TAG";
 
 	private static final boolean DEVELOPER_MODE = true;
+	
+	
+	//Mesuring Time
+	static long count = 0;
+	static TextView time;	
+	ThreadTime thread;
+	
 	
 	//프레퍼런스 값들
 	TextPref mPref;			
@@ -63,7 +70,31 @@ public class Setting extends Activity {
 		}		
         super.onCreate(savedInstanceState);        
         setContentView(R.layout.settingpage);             
-        Log.d(TAG, "setContentView");
+        Log.d(TAG, "setting view");
+        
+      
+        
+        
+        time = (TextView)findViewById(R.id.time);
+        
+        Log.d(TAG, "setting view");
+        
+            
+        thread = new ThreadTime(mHandler);
+        thread.start();
+        thread.onStart();
+        
+        
+               
+        
+        Log.d(TAG, "time01");
+
+        
+        
+        
+        
+        
+        
         
         
         
@@ -268,6 +299,66 @@ public class Setting extends Activity {
 		spin3.setSelection(spTag3);
 		
 		}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+    static Handler mHandler = new Handler(){
+    	
+		public void handleMessage(Message msg){
+			Log.v("StopWatch", "Handler" + count);
+			count ++;
+			long second = getSecond(count);
+			time.setText( second + "초 " + count%10 );
+		}		
+		
+	};
+	
+	public static long getSecond(long milli){
+		long secondValue = 0;
+		secondValue = milli / 10;
+		return secondValue;
+	}
+    
+    
+    
+    
+    class ThreadTime extends Thread{
+		Handler mHandler;
+		boolean sns = false; //Thread를 통제하기 위한 boolean 값
+		public void run(){
+			while(true){
+				if(sns){
+					Log.v("StopWatch", "ThreadTime");
+					mHandler.sendEmptyMessage(0);
+					try{
+						Thread.sleep(100);
+					}catch(InterruptedException e){
+					}
+				}
+			}
+		}
+		
+		//생성자
+		public ThreadTime(Handler handler){
+			mHandler = handler;
+		}
+		
+		public void onStart(){
+			sns = true;
+		}
+		
+		public void onStop(){
+			sns = false;
+		}		
+		
+	}
         
         
     
