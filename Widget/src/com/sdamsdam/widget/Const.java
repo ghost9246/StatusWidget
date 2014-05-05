@@ -8,6 +8,8 @@ public class Const
 	public static final String ACTION_DOWN		= "com.sdamsdam.widget.ACTION_DOWN";
 	public static final String ACTION_UP		= "com.sdamsdam.widget.ACTION_UP";
 	public static final String ACTION_SILENT	= "com.sdamsdam.widget.ACTION_SILENT";
+	public static final String ACTION_ANIMATION   = "com.sdamsdam.widget.ACTION_ANIMATION";
+	public static final String ACTION_EVOLVE1   = "com.sdamsdam.widget.ACTION_EVOLVE1";
 	
 	public static final String SMS_RECEIVED		= "android.provider.Telephony.SMS_RECEIVED";
 	public static final String BATTERY_CHANGED	= "android.intent.action.BATTERY_CHANGED";

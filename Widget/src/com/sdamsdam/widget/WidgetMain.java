@@ -1,26 +1,16 @@
 package com.sdamsdam.widget;
 
-import android.content.Context;
-import android.app.PendingIntent;
-import android.appwidget.AppWidgetManager;
-import android.appwidget.AppWidgetProvider;
-import android.bluetooth.BluetoothAdapter;
-import android.content.ComponentName;
-import android.content.ContentResolver;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.database.Cursor;
-import android.media.AudioManager;
-import android.net.NetworkInfo;
-import android.net.Uri;
-import android.net.wifi.WifiManager;
-import android.os.Handler;
-import android.os.Message;
-import android.provider.Settings;
-import android.util.Log;
-import android.widget.ImageView;
-import android.widget.RemoteViews;
-import android.widget.Toast;
+import android.app.*;
+import android.appwidget.*;
+import android.bluetooth.*;
+import android.content.*;
+import android.database.*;
+import android.net.*;
+import android.net.wifi.*;
+import android.os.*;
+import android.provider.*;
+import android.util.*;
+import android.widget.*;
 
 public class WidgetMain extends AppWidgetProvider
 {
@@ -45,7 +35,29 @@ public class WidgetMain extends AppWidgetProvider
 	private static boolean isUsbAttached = false;
 	private static boolean isThreadCreated = false;
 	private int nowBattery;
+	
+	
+	//Evolotion variables
+	private static boolean egg_day0 = true; 
+	private static boolean egg_day1 = false; 
+	private static boolean egg_day2 = false;
+	private static boolean pet_lv1 = false;
+	private static boolean pet_lv2 = false;
+	private static boolean pet_lv3 = false;
+	private static boolean pet_lv4 = false;
+	private static boolean pet_lv5 = false;
 
+	
+	
+	static TextView time;	
+	
+	
+	long as = 0; 
+	
+	
+	
+	
+	
 	@Override
 	public void onEnabled(Context context)
 	{
@@ -63,6 +75,9 @@ public class WidgetMain extends AppWidgetProvider
 
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
 
+		
+		
+		
 		for(int i=0; i<appWidgetIds.length; i++)
 		{
 			String output = "";
@@ -70,7 +85,7 @@ public class WidgetMain extends AppWidgetProvider
 			RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
 
 			// Show thread animation
-			if(isThreadCreated)
+			if(isThreadCreated && egg_day0)
 			{
 				switch(aniOb.GetFrameNo())
 				{
@@ -97,9 +112,34 @@ public class WidgetMain extends AppWidgetProvider
 					break;
 				}
 				Log.v(TAG, "Frame #" + Integer.toString(aniOb.GetFrameNo()));
-				appWidgetManager.updateAppWidget(appWidgetId, views);
+				appWidgetManager.updateAppWidget(appWidgetId, views); 
 			}
 
+			
+			
+			
+			
+			
+			
+			
+			// Evolution Event
+			
+			
+			
+			
+			if(Setting.second  >= 10)
+				context.sendBroadcast(new Intent(Const.ACTION_EVOLVE1));
+			
+				
+			
+			
+			if(egg_day1 == true){
+				views.setImageViewResource(R.id.imageView1, R.drawable.egg_break01);
+				appWidgetManager.updateAppWidget(appWidgetId, views);
+			}
+			
+			
+			
 			// Show device's state
 			if(isBatteryLow == true)
 				output = output.concat("Hungry ");
@@ -150,6 +190,7 @@ public class WidgetMain extends AppWidgetProvider
 	{
 		this.context = context;
 		ImageView iv = new ImageView(context);
+		
 
 		Log.i(TAG, "======================= initUI() =======================");
 		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
@@ -192,7 +233,10 @@ public class WidgetMain extends AppWidgetProvider
 		for(int appWidgetId : appWidgetIds)
 			appWidgetManager.updateAppWidget(appWidgetId, views);
 
-		context.sendBroadcast(new Intent(Const.ACTION_SILENT));
+		
+				
+			
+		
 		Log.v(TAG, Integer.toString(nowBattery));
 	}
 
@@ -220,6 +264,11 @@ public class WidgetMain extends AppWidgetProvider
 			Check_SMSRead(context);
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
 			initUI(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
+		}
+		else if(Const.ACTION_ANIMATION.equals(action))
+		{
+			AppWidgetManager manager = AppWidgetManager.getInstance(context);
+			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
 		}
 		else if(Const.SMS_RECEIVED.equals(action))
 		{
@@ -383,6 +432,22 @@ public class WidgetMain extends AppWidgetProvider
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
 			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
 		}
+		
+		
+		
+		//Evolvotion Events
+		
+		else if(Const.ACTION_EVOLVE1.equals(action))
+		{
+			egg_day0 = false;
+			egg_day1 = true;
+
+			AppWidgetManager manager = AppWidgetManager.getInstance(context);
+			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
+		}
+		
+		
+		
 	}
 
 	public void Check_SMSRead(Context context)
@@ -414,7 +479,7 @@ public class WidgetMain extends AppWidgetProvider
 		public void handleMessage(Message msg)
 		{
 			super.handleMessage(msg);
-			context.sendBroadcast(new Intent(Const.ACTION_SILENT));
+			context.sendBroadcast(new Intent(Const.ACTION_ANIMATION));
 		}
 	};
 }

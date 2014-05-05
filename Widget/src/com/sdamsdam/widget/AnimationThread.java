@@ -48,7 +48,7 @@ public class AnimationThread extends Thread
 				msg.what = 0;
 				handler.sendMessage(msg);
 
-				Thread.sleep(100);		// frame delay (ms)
+				Thread.sleep(300);		// frame delay (ms)
 			}
 			catch(InterruptedException e)
 			{
@@ -57,4 +57,10 @@ public class AnimationThread extends Thread
 			}
 		}
 	}
+	
+	
+
+	
+	
+	
 }

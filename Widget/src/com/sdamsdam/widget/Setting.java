@@ -1,6 +1,8 @@
 package com.sdamsdam.widget;
 
 
+import java.io.*;
+
 import android.annotation.*;
 import android.app.*;
 import android.content.*;
@@ -25,7 +27,8 @@ public class Setting extends Activity {
 	//Mesuring Time
 	static long count = 0;
 	static TextView time;	
-	ThreadTime thread;
+	ThreadTime thread;	
+	static long second = 0;
 	
 	
 	//프레퍼런스 값들
@@ -97,8 +100,18 @@ public class Setting extends Activity {
         
         
         //프레퍼런스 읽어오기        
+        
+        
+        
+        
+        File saveDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "SsdamSsdam"); // dir : 생성하고자 하는 경로
+        if(!saveDir.exists()) saveDir.mkdirs();
+        
+        
+        
+        
         try {
-			mPref = new TextPref("mnt/sdcard/Develop/textpref.pref");
+			mPref = new TextPref("mnt/sdcard/SsdamSsdam/textpref.pref");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}       
@@ -312,7 +325,7 @@ public class Setting extends Activity {
 		public void handleMessage(Message msg){
 			Log.v("StopWatch", "Handler" + count);
 			count ++;
-			long second = getSecond(count);
+			second = getSecond(count);
 			time.setText( second + "초 " + count%10 );
 		}		
 		
