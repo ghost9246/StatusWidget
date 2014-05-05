@@ -112,7 +112,7 @@ public class Setting extends Activity {
         
         try {
 			mPref = new TextPref("mnt/sdcard/SsdamSsdam/textpref.pref");
-		} catch (Exception e) {
+		} catch (Exception e) { 
 			e.printStackTrace();
 		}       
         mPref.Ready();    
@@ -125,9 +125,8 @@ public class Setting extends Activity {
         Num1 = (TextView)findViewById(R.id.input01);		
         stNum1 = mPref.ReadString("stNum1","0");
         Num1.setText(stNum1);
-        Num2 = (TextView)findViewById(R.id.input02);		
-        stNum2 = mPref.ReadString("stNum2","10000000");
-        Num2.setText(stNum2);
+        		
+      
      
               
         spTag1 = mPref.ReadInt("Tag1", 0);
@@ -420,8 +419,7 @@ public class Setting extends Activity {
     		
     		TextView txtname1 = (TextView)findViewById(R.id.input01);
     		stNum1 = txtname1.getText().toString();
-    		TextView txtname2 = (TextView)findViewById(R.id.input02);
-    		stNum2 = txtname2.getText().toString();
+    		
     		mPref.WriteString("stNum1", stNum1);
     		mPref.WriteString("stNum2", stNum2);
     		
@@ -459,17 +457,6 @@ public class Setting extends Activity {
     		break;
     		
 			
-		case R.id.reset1:
-			TextView txtname3 = (TextView)findViewById(R.id.input01);
-			txtname3.setText("0");
-			TextView txtname4 = (TextView)findViewById(R.id.input02);
-			txtname4.setText("10000000");						
-			break;
-			
-		case R.id.reset2:			
-			Spinner spin1 = (Spinner)findViewById(R.id.myspinner1);
-			spin1.setSelection(0);
-			break;
 			
 		case R.id.reset3:
 			Spinner spin2 = (Spinner)findViewById(R.id.myspinner2);

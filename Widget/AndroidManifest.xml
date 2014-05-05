@@ -26,7 +26,7 @@
 
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.sdamsdam.widget.ACTION_EVENT" />
+                <action android:name="com.sdamsdam.widget.ACTION_TOUCHEVENT" />
                 <action android:name="com.sdamsdam.widget.ACTION_SILENT" />
                 <action android:name="com.sdamsdam.widget.ACTION_ANIMATION" />
                 <action android:name="com.sdamsdam.widget.ACTION_EVOLVE1" />

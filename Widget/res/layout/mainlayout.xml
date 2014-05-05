@@ -5,6 +5,17 @@
     android:orientation="vertical" >
     
     
+    
+    <TextView    
+        android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text = "쓰담쓰담위젯을 생성하려면 Set-up 버튼을 눌러주세요"
+	    android:textSize = "11dip"
+	    android:textStyle = "bold"
+		android:textColor = "#ff282CB6"
+		android:layout_marginTop="10dip"
+		 />
+    
     <ImageView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"		
@@ -18,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="mOnClick"
-        android:text="Setting" />
+        android:text="Set-up" />
     
     
 

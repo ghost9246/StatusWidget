@@ -3,7 +3,7 @@ package com.sdamsdam.widget;
 public class Const
 {
 	/* BroadCastReceiver Filter */
-	public static final String ACTION_EVENT		= "com.sdamsdam.widget.ACTION_EVENT";
+	public static final String ACTION_TOUCHEVENT		= "com.sdamsdam.widget.ACTION_TOUCHEVENT";
 	public static final String ACTION_MOVE 		= "com.sdamsdam.widget.ACTION_MOVE";
 	public static final String ACTION_DOWN		= "com.sdamsdam.widget.ACTION_DOWN";
 	public static final String ACTION_UP		= "com.sdamsdam.widget.ACTION_UP";

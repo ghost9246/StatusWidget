@@ -29,68 +29,37 @@
     <TextView    
         android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text = "가격대"
+		android:text = "고유번호"
 	    android:textSize = "11dip"
 	    android:textStyle = "bold"
 		android:textColor = "#ff282CB6"
 		android:layout_marginTop="20dip"
 		 />
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"        
-        >
+  
         <EditText
-			android:id="@+id/input01"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"			
-			android:textSize="14sp"		
-			>
+            android:id="@+id/input01"
+            android:layout_width="129dp"
+            android:layout_height="wrap_content"
+            android:textSize="14sp" >
+
 		</EditText>
-		<TextView    
-        android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text = "~"
-	    android:textSize = "11dip"
-	    android:textStyle = "bold"
-		android:textColor = "#ff000000"
-		 />
-    <EditText
-			android:id="@+id/input02"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"			
-			android:textSize="14sp"	
-			>
-		</EditText>
-		
-    <ImageView
-        android:layout_width="28dip"
-        android:layout_height="28dip"
-        android:adjustViewBounds="true"        
-        android:src="@drawable/reset"
-        android:id="@+id/reset1"               
-        android:onClick="mOnClick"
-        android:clickable="true"
-         />
-		</LinearLayout>
-		
-  		
+
+
+	
     
     
  
     <TextView    
         android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text = "생산지"
+		android:text = "제조사"
 	    android:textSize = "11dip"
 	    android:textStyle = "bold"
 		android:textColor = "#ff282CB6"
 		android:layout_marginTop="10dip"
 		 />
    
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" 
-         >
+  
 
     <Spinner
         android:id="@+id/myspinner1"
@@ -99,22 +68,11 @@
 
     
 
-    <ImageView
-        android:layout_width="28dip"
-        android:layout_height="28dip"
-        android:adjustViewBounds="true"        
-        android:src="@drawable/reset"
-        android:id="@+id/reset2"               
-        android:onClick="mOnClick"
-        android:clickable="true"
-         />
-    </LinearLayout>    
-    
     
      <TextView    
         android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text = "빈티지"
+		android:text = "구입년도"
 	    android:textSize = "11dip"
 	    android:textStyle = "bold"
 		android:textColor = "#ff282CB6"
@@ -162,7 +120,7 @@
         <TextView    
         android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text = "종류"
+		android:text = "귀여움성"
 	    android:textSize = "11dip"
 	    android:textStyle = "bold"
 		android:textColor = "#ff282CB6"
@@ -268,7 +226,7 @@
         <TextView    
         android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text = "당도"
+		android:text = "떨군횟수"
 	    android:textSize = "11dip"
 	    android:textStyle = "bold"
 		android:textColor = "#ff282CB6"

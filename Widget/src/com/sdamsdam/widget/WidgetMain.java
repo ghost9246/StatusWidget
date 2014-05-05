@@ -34,6 +34,7 @@ public class WidgetMain extends AppWidgetProvider
 	private static boolean isPowerConnected = false;
 	private static boolean isUsbAttached = false;
 	private static boolean isThreadCreated = false;
+	private static boolean isThreadRunning = false;
 	private int nowBattery;
 	
 	
@@ -46,8 +47,12 @@ public class WidgetMain extends AppWidgetProvider
 	private static boolean pet_lv3 = false;
 	private static boolean pet_lv4 = false;
 	private static boolean pet_lv5 = false;
-
 	
+
+	//Animation variables
+	private static boolean onTouch = false;
+	private static boolean onOften = false;
+
 	
 	static TextView time;	
 	
@@ -72,7 +77,6 @@ public class WidgetMain extends AppWidgetProvider
 		Log.i(TAG, "========== ============= onUpdate() =======================");
 
 		this.context = context;
-
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
 
 		
@@ -84,59 +88,133 @@ public class WidgetMain extends AppWidgetProvider
 			int appWidgetId = appWidgetIds[i];
 			RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
 
-			// Show thread animation
-			if(isThreadCreated && egg_day0)
-			{
-				switch(aniOb.GetFrameNo())
-				{
-				case 0:
-					views.setImageViewResource(R.id.imageView1, R.drawable.egg);
-					break;
-
-				case 1:
-					views.setImageViewResource(R.id.imageView1, R.drawable.egg2);
-					break;
-
-				case 2:
-					views.setImageViewResource(R.id.imageView1, R.drawable.egg);
-					break;
-
-				case 3:
-					views.setImageViewResource(R.id.imageView1, R.drawable.egg2);
-					break;
-
-				case 4:
-					views.setImageViewResource(R.id.imageView1, R.drawable.egg);
-					aniThread.SetState(false);
-					// aniThread.stop();
-					break;
-				}
-				Log.v(TAG, "Frame #" + Integer.toString(aniOb.GetFrameNo()));
-				appWidgetManager.updateAppWidget(appWidgetId, views); 
-			}
-
 			
 			
 			
 			
+			// Often Event (Anim)
+			
+			if(Setting.second%5 == 0)
+				Anim("often");
 			
 			
 			
-			// Evolution Event
 			
-			
-			
-			
+			// Evolution Event	 
+						
 			if(Setting.second  >= 10)
 				context.sendBroadcast(new Intent(Const.ACTION_EVOLVE1));
 			
-				
 			
 			
-			if(egg_day1 == true){
-				views.setImageViewResource(R.id.imageView1, R.drawable.egg_break01);
-				appWidgetManager.updateAppWidget(appWidgetId, views);
-			}
+			
+
+			
+			//  thread animation
+			
+						if(isThreadRunning && egg_day0)
+						{
+							switch(aniOb.GetFrameNo())
+							{
+							case 0:
+								views.setImageViewResource(R.id.imageView1, R.drawable.egg_day0);
+								break;
+
+							case 1:
+								views.setImageViewResource(R.id.imageView1, R.drawable.egg_day0);
+								break;
+
+							case 2:
+								views.setImageViewResource(R.id.imageView1, R.drawable.egg_day0);
+								break;
+
+							case 3:
+								views.setImageViewResource(R.id.imageView1, R.drawable.egg_day0_often);
+								break;
+
+							case 4:
+								views.setImageViewResource(R.id.imageView1, R.drawable.egg_day0);
+								aniThread.SetState(false);
+								isThreadRunning = false;
+								// aniThread.stop();
+								break;
+							}
+							Log.v(TAG, "Frame #" + Integer.toString(aniOb.GetFrameNo()));
+						}
+						
+						 
+						
+						
+						else if(isThreadRunning && egg_day1)
+						{
+							switch(aniOb.GetFrameNo())
+							{
+							case 0:
+								views.setImageViewResource(R.id.imageView1, R.drawable.egg_day1);
+								break;
+
+							case 1:
+								views.setImageViewResource(R.id.imageView1, R.drawable.egg_day1);
+								break;
+
+							case 2:
+								views.setImageViewResource(R.id.imageView1, R.drawable.egg_day1);
+								break;
+
+							case 3:
+								views.setImageViewResource(R.id.imageView1, R.drawable.egg_day1_often);
+								break;
+
+							case 4:
+								views.setImageViewResource(R.id.imageView1, R.drawable.egg_day1);
+								aniThread.SetState(false);
+								isThreadRunning = false;
+								// aniThread.stop();
+								break;
+							}
+							Log.v(TAG, "Frame #" + Integer.toString(aniOb.GetFrameNo()));
+						}
+						
+						
+						
+						else if(isThreadRunning && egg_day1 && onTouch)
+						{
+							switch(aniOb.GetFrameNo())
+							{
+							case 0:
+								views.setImageViewResource(R.id.imageView1, R.drawable.egg_day1);
+								break;
+
+							case 1:
+								views.setImageViewResource(R.id.imageView1, R.drawable.egg_day1_touched);
+								break;
+
+							case 2:
+								views.setImageViewResource(R.id.imageView1, R.drawable.egg_day1_touched);
+								break;
+
+							case 3:
+								views.setImageViewResource(R.id.imageView1, R.drawable.egg_day1);
+								break;
+
+							case 4:
+								views.setImageViewResource(R.id.imageView1, R.drawable.egg_day1);
+								aniThread.SetState(false);
+								isThreadRunning = false;
+								onTouch=false;
+								// aniThread.stop();
+								break;
+							}
+							
+							
+							
+						}
+						
+			
+			
+			
+			
+			
 			
 			
 			
@@ -172,6 +250,10 @@ public class WidgetMain extends AppWidgetProvider
 		}
 	}
 
+	
+	
+	
+	
 	@Override
 	public void onDeleted(Context context, int[] appWidgetIds)
 	{
@@ -189,25 +271,46 @@ public class WidgetMain extends AppWidgetProvider
 	public void initUI(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
 	{
 		this.context = context;
-		ImageView iv = new ImageView(context);
+		
 		
 
 		Log.i(TAG, "======================= initUI() =======================");
-		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
-
-		// Set additional intent filter (Headset & battery)
-		context.getApplicationContext().registerReceiver(this, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-		context.getApplicationContext().registerReceiver(this, new IntentFilter(Intent.ACTION_HEADSET_PLUG));
-
+		
+		
 		// Create & run thread
 		aniThread = new AnimationThread();
 		aniOb = AnimationObserver.GetInstance();
 		mMainHandler = new _ThreadHandler();
 		aniThread.SetThreadHandler(mMainHandler);
 		isThreadCreated = true;
+		
+		
+		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
+
+		
+		
+		// Evolution Event			
+		
+		for(int i=0; i<appWidgetIds.length; i++)
+		{
+			int appWidgetId = appWidgetIds[i];
+						
+			if(egg_day1 == true)
+				views.setImageViewResource(R.id.imageView1, R.drawable.egg_day1);	
+			appWidgetManager.updateAppWidget(appWidgetId, views);
+		}
+		
+	
+		
+		
+		// Set additional intent filter (Headset & battery)
+		context.getApplicationContext().registerReceiver(this, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+		context.getApplicationContext().registerReceiver(this, new IntentFilter(Intent.ACTION_HEADSET_PLUG));
+
+		
 
 		// Set event intent
-		Intent eventIntent = new Intent(Const.ACTION_EVENT);
+		Intent eventIntent = new Intent(Const.ACTION_TOUCHEVENT);
 		/*
 		Intent moveIntent = new Intent(Const.ACTION_MOVE);
 		Intent downIntent = new Intent(Const.ACTION_DOWN);
@@ -251,9 +354,8 @@ public class WidgetMain extends AppWidgetProvider
 		// Default Receiver
 		if(AppWidgetManager.ACTION_APPWIDGET_ENABLED.equals(action)) {}
 		else if(AppWidgetManager.ACTION_APPWIDGET_UPDATE.equals(action))
-		{
-			AppWidgetManager manager = AppWidgetManager.getInstance(context);
-			initUI(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
+		{		
+			
 		}
 		else if(AppWidgetManager.ACTION_APPWIDGET_DELETED.equals(action)) {}
 		else if(AppWidgetManager.ACTION_APPWIDGET_DISABLED.equals(action)) {}
@@ -387,7 +489,7 @@ public class WidgetMain extends AppWidgetProvider
 			Toast.makeText(context, "MOVE", Toast.LENGTH_SHORT).show();
 		}
 		 */		
-		else if(Const.ACTION_EVENT.equals(action))
+		else if(Const.ACTION_TOUCHEVENT.equals(action))
 		{
 			int textcode = (int)(Math.random()*5);
 			String text = null;
@@ -416,18 +518,16 @@ public class WidgetMain extends AppWidgetProvider
 			}
 
 			Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
-			Check_SMSRead(context);
+			//Check_SMSRead(context);
+			
+			
+			//touch animation
+			
+			Anim("touched");
 
 			Log.v(TAG, "Get ready for thread");
 			
-			if(aniThread == null)
-			{
-				Log.v(TAG, "damn");
-				aniThread = new AnimationThread();
-			}
 			
-			aniThread.SetState(true);
-			aniThread.start();
 
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
 			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
@@ -440,10 +540,13 @@ public class WidgetMain extends AppWidgetProvider
 		else if(Const.ACTION_EVOLVE1.equals(action))
 		{
 			egg_day0 = false;
-			egg_day1 = true;
-
+			egg_day1 = true;			
+			
+			
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
-			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
+			
+			this.initUI(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
+			
 		}
 		
 		
@@ -482,4 +585,44 @@ public class WidgetMain extends AppWidgetProvider
 			context.sendBroadcast(new Intent(Const.ACTION_ANIMATION));
 		}
 	};
+	
+	
+	
+	
+	public void Anim (String when)	
+	{
+		
+		
+		
+		
+		if(when == "touched")
+			onTouch=true;
+				
+	    
+		
+		
+		
+		if(aniThread == null)
+		{
+			Log.v(TAG, "damn");
+			aniThread = new AnimationThread();
+		}
+		
+		aniThread.start();
+		aniThread.SetState(true);
+		isThreadRunning = true;
+		
+		
+		
+		
+		
+		
+					
+					
+
+		
+	}
+	
+	
+	
 }

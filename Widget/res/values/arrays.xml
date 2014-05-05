@@ -1,29 +1,12 @@
 <resources>
 	
 	<string-array name="nation">
-	    <item>All</item>		
-		<item>Argentina</item>
-		<item>Australia</item>
-		<item>Austria</item>
-		<item>Canada</item>	
-		<item >Chile</item>	
-		<item >France</item>
-		<item >Georgia</item>
-		<item >Germany</item>
-		<item >Greece</item>
-		<item >Hungary</item>
-		<item >Italy</item>
-		<item >New Zealand</item>
-		<item >Portugal</item>
-		<item >Romania</item>
-		<item >South Africa</item>
-		<item >Spain</item>
-		<item >U.S.A</item>
-		<item >Korea</item>		
-		<item >U.K</item>
-		<item >Belgium</item>		
-		<item >Azerbaijan</item>
-		<item >Others</item>
+	    <item>Apple</item>
+	    <item>LG</item>
+	    <item>Samsung</item>	    
+	    <item>Sony</item>
+	    <item>Pentech</item>			
+		
 	</string-array>
 	
 	<string-array name="vintage">
