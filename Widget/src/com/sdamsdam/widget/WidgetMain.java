@@ -18,6 +18,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.widget.ImageView;
 import android.widget.RemoteViews;
 import android.widget.Toast;
@@ -44,6 +46,7 @@ public class WidgetMain extends AppWidgetProvider
 	private static boolean isPowerConnected = false;
 	private static boolean isUsbAttached = false;
 	private static boolean isThreadCreated = false;
+	private static GestureDetector mGestureDetector; 
 	private int nowBattery;
 
 	@Override
@@ -164,16 +167,19 @@ public class WidgetMain extends AppWidgetProvider
 		mMainHandler = new _ThreadHandler();
 		aniThread.SetThreadHandler(mMainHandler);
 		isThreadCreated = true;
+		
+		mGestureDetector = new GestureDetector(context, new LearnGestureListener());
+		mGestureDetector.onTouchEvent(event);  
 
 		// Set event intent
-		Intent eventIntent = new Intent(Const.ACTION_EVENT);
+//		Intent eventIntent = new Intent(Const.ACTION_EVENT);
 		/*
 		Intent moveIntent = new Intent(Const.ACTION_MOVE);
 		Intent downIntent = new Intent(Const.ACTION_DOWN);
 		Intent upIntent = new Intent(Const.ACTION_UP);
 		 */
 
-		PendingIntent eventPIntent = PendingIntent.getBroadcast(context, 0, eventIntent, 0);
+//		PendingIntent eventPIntent = PendingIntent.getBroadcast(context, 0, eventIntent, 0);
 		/*
 		PendingIntent movePIntent = PendingIntent.getBroadcast(context, 0, moveIntent, 0);
 		PendingIntent downPIntent = PendingIntent.getBroadcast(context, 0, downIntent, 0);
@@ -181,7 +187,7 @@ public class WidgetMain extends AppWidgetProvider
 		 */
 
 		// Set intent's event
-		views.setOnClickPendingIntent(R.id.imageView1, eventPIntent);
+//		views.setOnClickPendingIntent(R.id.imageView1, eventPIntent);
 
 		/*
 		views.setOnClickPendingIntent(R.id.imageView1, movePIntent);
@@ -215,6 +221,7 @@ public class WidgetMain extends AppWidgetProvider
 		else if(AppWidgetManager.ACTION_APPWIDGET_DISABLED.equals(action)) {}
 
 		// Custom Recevier
+		/*
 		else if(Const.ACTION_SILENT.equals(action))
 		{
 			Check_SMSRead(context);
@@ -320,7 +327,7 @@ public class WidgetMain extends AppWidgetProvider
 		}
 
 		// Action
-		/*
+		
 		else if(Const.ACTION_DOWN.equals(action))
 		{
 			Toast.makeText(context, "DOWN", Toast.LENGTH_SHORT).show();
@@ -337,7 +344,7 @@ public class WidgetMain extends AppWidgetProvider
 		{
 			Toast.makeText(context, "MOVE", Toast.LENGTH_SHORT).show();
 		}
-		 */		
+		
 		else if(Const.ACTION_EVENT.equals(action))
 		{
 			int textcode = (int)(Math.random()*5);
@@ -383,6 +390,7 @@ public class WidgetMain extends AppWidgetProvider
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
 			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
 		}
+		*/
 	}
 
 	public void Check_SMSRead(Context context)
@@ -408,6 +416,10 @@ public class WidgetMain extends AppWidgetProvider
 			isSMSNotRead = true;
 	}
 
+	public boolean onTouchEvent(MotionEvent event) {  
+        return mGestureDetector.onTouchEvent(event);  
+    }
+	
 	class _ThreadHandler extends Handler
 	{
 		@Override
@@ -417,4 +429,41 @@ public class WidgetMain extends AppWidgetProvider
 			context.sendBroadcast(new Intent(Const.ACTION_SILENT));
 		}
 	};
+	
+	class LearnGestureListener extends GestureDetector.SimpleOnGestureListener {  
+        @Override  
+        public boolean onSingleTapUp(MotionEvent ev) {  
+            Log.d(TAG,"onSingleTapUp");  
+            return true;  
+        }  
+        @Override  
+        public void onShowPress(MotionEvent ev) {  
+            Log.d(TAG,"onShowPress");
+        }  
+        @Override  
+        public void onLongPress(MotionEvent ev) {  
+            Log.d(TAG,"onLongPress");  
+        }  
+        @Override  
+        public boolean onScroll(MotionEvent e1, MotionEvent e2,  
+                float distanceX, float distanceY) {  
+            Log.d(TAG,"onScroll");  
+            return true;  
+        }  
+        @Override  
+        public boolean onDown(MotionEvent ev) {  
+            Log.d(TAG,"onDownd");  
+            return true;  
+        }  
+        @Override  
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,  
+                float velocityY) {  
+            Log.d(TAG,"onFling");  
+            return true;  
+        }  
+        public boolean onDoubleTap(MotionEvent event){  
+            Log.d(TAG,"onDoubleTap");  
+            return true;  
+        }  
+    }  
 }
