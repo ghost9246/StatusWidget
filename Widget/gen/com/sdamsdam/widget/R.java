@@ -146,18 +146,19 @@ public final class R {
         public static final int egg_98=0x7f02007c;
         public static final int egg_99=0x7f02007d;
         public static final int egg_all=0x7f02007e;
-        public static final int home=0x7f02007f;
-        public static final int ic_launcher=0x7f020080;
-        public static final int personal=0x7f020081;
-        public static final int rammus=0x7f020082;
-        public static final int rammus1=0x7f020083;
-        public static final int rammus2=0x7f020084;
-        public static final int rammus3=0x7f020085;
-        public static final int rammus4=0x7f020086;
-        public static final int reset=0x7f020087;
-        public static final int samsung=0x7f020088;
-        public static final int samsung_detail=0x7f020089;
-        public static final int samsung_expression=0x7f02008a;
+        public static final int eggs=0x7f02007f;
+        public static final int home=0x7f020080;
+        public static final int ic_launcher=0x7f020081;
+        public static final int personal=0x7f020082;
+        public static final int rammus=0x7f020083;
+        public static final int rammus1=0x7f020084;
+        public static final int rammus2=0x7f020085;
+        public static final int rammus3=0x7f020086;
+        public static final int rammus4=0x7f020087;
+        public static final int reset=0x7f020088;
+        public static final int samsung=0x7f020089;
+        public static final int samsung_detail=0x7f02008a;
+        public static final int samsung_expression=0x7f02008b;
     }
     public static final class id {
         public static final int cancled=0x7f080019;

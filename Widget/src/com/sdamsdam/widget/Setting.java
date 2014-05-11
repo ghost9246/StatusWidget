@@ -1,6 +1,5 @@
 package com.sdamsdam.widget;
 
-
 import android.annotation.*;
 import android.app.*;
 import android.content.*;
@@ -10,51 +9,32 @@ import android.view.*;
 import android.widget.*;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-
-
-
 public class Setting extends Activity { 
-	
-	
-	
 	private static final String TAG = "Setting_TAG";
-
 	private static final boolean DEVELOPER_MODE = true;
-	
-	
+
 	//Mesuring Time
 	static long count = 0;
 	static TextView time;	
 	ThreadTime thread;
-	
-	
+
 	//프레퍼런스 값들
 	TextPref mPref;			
 	String stNum1;
 	String stNum2;
-	
+
 	int spTag1;
 	int spTag2;
 	int spTag3;
-	
-	
-	Boolean checked[] = new Boolean[20];
-	
-	
 
-	
+	Boolean checked[] = new Boolean[20];
+
 	//스피너 변수들
 	ArrayAdapter<CharSequence> adspin1;
 	ArrayAdapter<CharSequence> adspin2;
 	ArrayAdapter<CharSequence> adspin3;
 	boolean mInitSpinner;
-		
-	
-	
-	
-	
-	
-	
+
 	@TargetApi(Build.VERSION_CODES.GINGERBREAD)
 	public void onCreate(Bundle savedInstanceState) {
 
@@ -66,88 +46,63 @@ public class Setting extends Activity {
 			.penaltyLog()
 			.build());
 		}		
-        super.onCreate(savedInstanceState);        
-        setContentView(R.layout.settingpage);             
-        Log.d(TAG, "setting view");
-        
-      
-        
-        
-        time = (TextView)findViewById(R.id.time);
-        
-        Log.d(TAG, "setting view");
-        
-            
-        thread = new ThreadTime(mHandler);
-        thread.start();
-        thread.onStart();
-        
-        
-               
-        
-        Log.d(TAG, "time01");
+		super.onCreate(savedInstanceState);        
+		setContentView(R.layout.settingpage);             
+		Log.d(TAG, "setting view");
+		time = (TextView)findViewById(R.id.time);
 
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        //프레퍼런스 읽어오기        
-        try {
+		Log.d(TAG, "setting view");
+
+		thread = new ThreadTime(mHandler);
+		thread.start();
+		thread.onStart();
+		Log.d(TAG, "time01");
+
+		//프레퍼런스 읽어오기        
+		try {
 			mPref = new TextPref("mnt/sdcard/Develop/textpref.pref");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}       
-        mPref.Ready();    
-        
-        
-        TextView Num1;
-    	TextView Num2;
-    	
-    	
-        Num1 = (TextView)findViewById(R.id.input01);		
-        stNum1 = mPref.ReadString("stNum1","0");
-        Num1.setText(stNum1);
-        Num2 = (TextView)findViewById(R.id.input02);		
-        stNum2 = mPref.ReadString("stNum2","10000000");
-        Num2.setText(stNum2);
-     
-              
-        spTag1 = mPref.ReadInt("Tag1", 0);
-        spTag2 = mPref.ReadInt("Tag2", 0);
-        spTag3 = mPref.ReadInt("Tag3", 0);
-        
-        Log.d(TAG,"spTag3");
-        
-        checked[0] = mPref.ReadBoolean("checked0", false);
-        checked[1] = mPref.ReadBoolean("checked1", false);
-        checked[2] = mPref.ReadBoolean("checked2", false);
-        checked[3] = mPref.ReadBoolean("checked3", false);
-        checked[4] = mPref.ReadBoolean("checked4", false);
-        checked[5] = mPref.ReadBoolean("checked5", false);
-        checked[6] = mPref.ReadBoolean("checked6", false);
-        checked[7] = mPref.ReadBoolean("checked7", false);
-        checked[8] = mPref.ReadBoolean("checked8", false);
-        checked[9] = mPref.ReadBoolean("checked9", false);
-        checked[10] = mPref.ReadBoolean("checked10", false);
-        checked[11] = mPref.ReadBoolean("checked11", false);
-        checked[12] = mPref.ReadBoolean("checked12", false);
-        checked[13] = mPref.ReadBoolean("checked13", false);
-       
-        Log.d(TAG,"checked[11]");
+		mPref.Ready();    
+
+		TextView Num1;
+		TextView Num2;
+
+		Num1 = (TextView)findViewById(R.id.input01);		
+		stNum1 = mPref.ReadString("stNum1","0");
+		Num1.setText(stNum1);
+		Num2 = (TextView)findViewById(R.id.input02);		
+		stNum2 = mPref.ReadString("stNum2","10000000");
+		Num2.setText(stNum2);
+
+		spTag1 = mPref.ReadInt("Tag1", 0);
+		spTag2 = mPref.ReadInt("Tag2", 0);
+		spTag3 = mPref.ReadInt("Tag3", 0);
+
+		Log.d(TAG,"spTag3");
+
+		checked[0] = mPref.ReadBoolean("checked0", false);
+		checked[1] = mPref.ReadBoolean("checked1", false);
+		checked[2] = mPref.ReadBoolean("checked2", false);
+		checked[3] = mPref.ReadBoolean("checked3", false);
+		checked[4] = mPref.ReadBoolean("checked4", false);
+		checked[5] = mPref.ReadBoolean("checked5", false);
+		checked[6] = mPref.ReadBoolean("checked6", false);
+		checked[7] = mPref.ReadBoolean("checked7", false);
+		checked[8] = mPref.ReadBoolean("checked8", false);
+		checked[9] = mPref.ReadBoolean("checked9", false);
+		checked[10] = mPref.ReadBoolean("checked10", false);
+		checked[11] = mPref.ReadBoolean("checked11", false);
+		checked[12] = mPref.ReadBoolean("checked12", false);
+		checked[13] = mPref.ReadBoolean("checked13", false);
+
+		Log.d(TAG,"checked[11]");
 
 		mPref.EndReady();
-		
-		
-		
-		
-		
+
 		//체크박스 값에 따라 체크해주기
-		
+
 		if(checked[0]){
 			CheckBox bo = (CheckBox)findViewById(R.id.kind1);			
 			bo.setChecked(true);
@@ -204,16 +159,7 @@ public class Setting extends Activity {
 			CheckBox bo = (CheckBox)findViewById(R.id.dry5);
 			bo.setChecked(true);
 		}
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
 		Spinner spin1 = (Spinner)findViewById(R.id.myspinner1);
 		spin1.setPrompt("안녕스피너");
 
@@ -225,12 +171,12 @@ public class Setting extends Activity {
 		spin1.setOnItemSelectedListener(new OnItemSelectedListener() {
 			public void onItemSelected(AdapterView<?> parent, View view, 
 					int position, long id) {
-				 //�ʱ�ȭ���� ���� ���ܽ�
+				//�ʱ�ȭ���� ���� ���ܽ�
 				if (mInitSpinner == false) {
 					mInitSpinner = true;
 					return;
 				}
-				
+
 				Toast.makeText(Setting.this,adspin1.getItem(position) + "를 선택했지 난.",
 						Toast.LENGTH_SHORT).show();
 				//프레퍼런스에 기록하기
@@ -241,9 +187,9 @@ public class Setting extends Activity {
 		});
 		//스피너 초기값지정
 		spin1.setSelection(spTag1);
-		
-		
-		
+
+
+
 		Spinner spin2 = (Spinner)findViewById(R.id.myspinner2);
 		spin2.setPrompt("안녕스피너");
 
@@ -255,7 +201,7 @@ public class Setting extends Activity {
 		spin2.setOnItemSelectedListener(new OnItemSelectedListener() {
 			public void onItemSelected(AdapterView<?> parent, View view, 
 					int position, long id) {
-				 //�ʱ�ȭ���� ���� ���ܽ�
+				//�ʱ�ȭ���� ���� ���ܽ�
 				if (mInitSpinner == false) {
 					mInitSpinner = true;
 					return;
@@ -268,9 +214,9 @@ public class Setting extends Activity {
 		});
 		//스피너 초기값지정
 		spin2.setSelection(spTag2);
-		
-		
-		
+
+
+
 		Spinner spin3 = (Spinner)findViewById(R.id.myspinner3);
 		spin3.setPrompt("안녕스피너");
 
@@ -282,7 +228,7 @@ public class Setting extends Activity {
 		spin3.setOnItemSelectedListener(new OnItemSelectedListener() {
 			public void onItemSelected(AdapterView<?> parent, View view, 
 					int position, long id) {
-				 //�ʱ�ȭ���� ���� ���ܽ�
+				//�ʱ�ȭ���� ���� ���ܽ�
 				if (mInitSpinner == false) {
 					mInitSpinner = true;
 					return;
@@ -295,39 +241,25 @@ public class Setting extends Activity {
 		});
 		//스피너 초기값지정
 		spin3.setSelection(spTag3);
-		
-		}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	}
 
-    static Handler mHandler = new Handler(){
-    	
+	static Handler mHandler = new Handler(){
+
 		public void handleMessage(Message msg){
 			Log.v("StopWatch", "Handler" + count);
 			count ++;
 			long second = getSecond(count);
 			time.setText( second + "초 " + count%10 );
 		}		
-		
 	};
-	
+
 	public static long getSecond(long milli){
 		long secondValue = 0;
 		secondValue = milli / 10;
 		return secondValue;
 	}
-    
-    
-    
-    
-    class ThreadTime extends Thread{
+
+	class ThreadTime extends Thread{
 		Handler mHandler;
 		boolean sns = false; //Thread를 통제하기 위한 boolean 값
 		public void run(){
@@ -342,45 +274,24 @@ public class Setting extends Activity {
 				}
 			}
 		}
-		
+
 		//생성자
 		public ThreadTime(Handler handler){
 			mHandler = handler;
 		}
-		
+
 		public void onStart(){
 			sns = true;
 		}
-		
+
 		public void onStop(){
 			sns = false;
 		}		
-		
+
 	}
-        
-        
-    
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	public void onPause() {
 		super.onPause();
-
-		
-		
-		
-
 		/* 
 		mPref.BulkWriteReady(1000);
 		mPref.BulkWrite("Name", Name);
@@ -388,84 +299,72 @@ public class Setting extends Activity {
 		mPref.CommitWrite();
 		//*/
 	}
-	
-	
-	
-	
-	
+
 	public void mOnClick(View v){
 		Log.d(TAG,"monclick");
-		
-    	switch(v.getId()){    	
-    		
-    	case R.id.ok:    		
-    		Intent intent = new Intent();    		
-    		setResult(RESULT_OK,intent)	;
-    		Log.d(TAG,"setOK");
-    		
-    		mPref.Ready();
-    		
-    		TextView txtname1 = (TextView)findViewById(R.id.input01);
-    		stNum1 = txtname1.getText().toString();
-    		TextView txtname2 = (TextView)findViewById(R.id.input02);
-    		stNum2 = txtname2.getText().toString();
-    		mPref.WriteString("stNum1", stNum1);
-    		mPref.WriteString("stNum2", stNum2);
-    		
-    		mPref.WriteInt("Tag1", spTag1);
-    		mPref.WriteInt("Tag2", spTag2);
-    		mPref.WriteInt("Tag3", spTag3);
-    		
-    		mPref.WriteBoolean("checked0", checked[0]);
-    		mPref.WriteBoolean("checked1", checked[1]);
-    		mPref.WriteBoolean("checked2", checked[2]);
-    		mPref.WriteBoolean("checked3", checked[3]);
-    		mPref.WriteBoolean("checked4", checked[4]);
-    		mPref.WriteBoolean("checked5", checked[5]);
-    		mPref.WriteBoolean("checked6", checked[6]);
-    		mPref.WriteBoolean("checked7", checked[7]);
-    		mPref.WriteBoolean("checked8", checked[8]);
-    		mPref.WriteBoolean("checked9", checked[9]);
-    		mPref.WriteBoolean("checked10", checked[10]);
-    		mPref.WriteBoolean("checked11", checked[11]);
-    		mPref.WriteBoolean("checked12", checked[12]);
-    		mPref.WriteBoolean("checked13", checked[13]);
-    			
-    		
-    		mPref.CommitWrite();
-    		
-    		
-    		
-    		
-    		finish();
-    		break;
-    		
-    	case R.id.cancled:
-    		setResult(RESULT_CANCELED);
-    		finish();
-    		break;
-    		
-			
+
+		switch(v.getId()){    	
+
+		case R.id.ok:    		
+			Intent intent = new Intent();    		
+			setResult(RESULT_OK,intent)	;
+			Log.d(TAG,"setOK");
+
+			mPref.Ready();
+
+			TextView txtname1 = (TextView)findViewById(R.id.input01);
+			stNum1 = txtname1.getText().toString();
+			TextView txtname2 = (TextView)findViewById(R.id.input02);
+			stNum2 = txtname2.getText().toString();
+			mPref.WriteString("stNum1", stNum1);
+			mPref.WriteString("stNum2", stNum2);
+
+			mPref.WriteInt("Tag1", spTag1);
+			mPref.WriteInt("Tag2", spTag2);
+			mPref.WriteInt("Tag3", spTag3);
+
+			mPref.WriteBoolean("checked0", checked[0]);
+			mPref.WriteBoolean("checked1", checked[1]);
+			mPref.WriteBoolean("checked2", checked[2]);
+			mPref.WriteBoolean("checked3", checked[3]);
+			mPref.WriteBoolean("checked4", checked[4]);
+			mPref.WriteBoolean("checked5", checked[5]);
+			mPref.WriteBoolean("checked6", checked[6]);
+			mPref.WriteBoolean("checked7", checked[7]);
+			mPref.WriteBoolean("checked8", checked[8]);
+			mPref.WriteBoolean("checked9", checked[9]);
+			mPref.WriteBoolean("checked10", checked[10]);
+			mPref.WriteBoolean("checked11", checked[11]);
+			mPref.WriteBoolean("checked12", checked[12]);
+			mPref.WriteBoolean("checked13", checked[13]);
+			mPref.CommitWrite();
+			finish();
+			break;
+
+		case R.id.cancled:
+			setResult(RESULT_CANCELED);
+			finish();
+			break;
+
 		case R.id.reset1:
 			TextView txtname3 = (TextView)findViewById(R.id.input01);
 			txtname3.setText("0");
 			TextView txtname4 = (TextView)findViewById(R.id.input02);
 			txtname4.setText("10000000");						
 			break;
-			
+
 		case R.id.reset2:			
 			Spinner spin1 = (Spinner)findViewById(R.id.myspinner1);
 			spin1.setSelection(0);
 			break;
-			
+
 		case R.id.reset3:
 			Spinner spin2 = (Spinner)findViewById(R.id.myspinner2);
 			spin2.setSelection(0);
 			Spinner spin3 = (Spinner)findViewById(R.id.myspinner3);
 			spin3.setSelection(0);
 			break;
-			
-			
+
 		case R.id.kind1:
 			checked[0] = !checked[0];
 			break;
@@ -509,17 +408,6 @@ public class Setting extends Activity {
 		case R.id.dry5:
 			checked[13] = !checked[13];			
 			break;
-			
 		}
-    		
-    		
-    		
-    		
-    }	
-	
-	
-		
-		
-		
-
+	}
 }

@@ -19,14 +19,14 @@ public class AnimationThread extends Thread
 
 	public void SetState(boolean state)
 	{
-		Log.v("sdamsdam", "Entering SetState");
+		Log.v(Const.TAG, "Entering SetState");
 		ob.ResetFrame();
 		
-		Log.v("sdamsdam", "Reset Frame");
+		Log.v(Const.TAG, "Reset Frame");
 		
 		isThreadRunning = state;
 		
-		Log.v("sdamsdam", "AnimationThread::SetState");
+		Log.v(Const.TAG, "AnimationThread::SetState");
 	}
 
 	public void SetThreadHandler(_ThreadHandler handler)
@@ -37,6 +37,7 @@ public class AnimationThread extends Thread
 	@Override
 	public void run()
 	{
+		Log.v(Const.TAG, "entering run");
 		while(isThreadRunning)
 		{
 			try
