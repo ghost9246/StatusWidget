@@ -10,6 +10,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -17,7 +18,9 @@ import android.net.wifi.WifiManager;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RemoteViews;
 import android.widget.Toast;
@@ -26,6 +29,7 @@ public class WidgetMain extends AppWidgetProvider
 {
 	// constant variables
 	private static final String TAG = "sdamsdam";
+	private static Context self;
 
 	// object variables
 	private Context context;	
@@ -51,16 +55,15 @@ public class WidgetMain extends AppWidgetProvider
 	{
 		Log.i(TAG, "======================= onEnabled() =======================");
 		super.onEnabled(context);
+		self = this.context;
 	}
 
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
 			int[] appWidgetIds)
 	{
-		Log.i(TAG, "========== ============= onUpdate() =======================");
-
+		Log.i(TAG, "======================= onUpdate() =======================");
 		this.context = context;
-
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
 
 		for(int i=0; i<appWidgetIds.length; i++)
@@ -72,7 +75,17 @@ public class WidgetMain extends AppWidgetProvider
 			// Show thread animation
 			if(isThreadCreated)
 			{
-				switch(aniOb.GetFrameNo())
+				int frame = aniOb.GetFrameNo();				
+				Bitmap canvas = Bitmap.createBitmap(140, 165, Bitmap.Config.ARGB_8888);
+				
+				Log.v(TAG, "onUpdate:: Fatal Test A");
+				Sprite sp = MediaAssets.getInstance().getSprite(R.drawable.eggs);		// error				
+				
+				Log.v(TAG, "onUpdate:: Fatal Test B");
+				SpriteHelper.DrawSprite(canvas, sp, 0, SpriteHelper.DrawPosition.BottomCenter, (frame % 5) *140, (frame * 5) * 165);
+				
+				/*
+				switch(frame)
 				{
 				case 0:
 					views.setImageViewResource(R.id.imageView1, R.drawable.egg);
@@ -96,6 +109,7 @@ public class WidgetMain extends AppWidgetProvider
 					// aniThread.stop();
 					break;
 				}
+				*/
 				Log.v(TAG, "Frame #" + Integer.toString(aniOb.GetFrameNo()));
 				appWidgetManager.updateAppWidget(appWidgetId, views);
 			}
@@ -193,7 +207,7 @@ public class WidgetMain extends AppWidgetProvider
 			appWidgetManager.updateAppWidget(appWidgetId, views);
 
 		context.sendBroadcast(new Intent(Const.ACTION_SILENT));
-		Log.v(TAG, Integer.toString(nowBattery));
+		Log.v(TAG, "Battery: " + Integer.toString(nowBattery));
 	}
 
 	@Override
@@ -210,6 +224,7 @@ public class WidgetMain extends AppWidgetProvider
 		{
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
 			initUI(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
+			Log.v(TAG, "WIDGET_UPDATE");
 		}
 		else if(AppWidgetManager.ACTION_APPWIDGET_DELETED.equals(action)) {}
 		else if(AppWidgetManager.ACTION_APPWIDGET_DISABLED.equals(action)) {}
@@ -219,7 +234,7 @@ public class WidgetMain extends AppWidgetProvider
 		{
 			Check_SMSRead(context);
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
-			initUI(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
+			this.onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, getClass())));
 		}
 		else if(Const.SMS_RECEIVED.equals(action))
 		{
@@ -370,13 +385,13 @@ public class WidgetMain extends AppWidgetProvider
 			Check_SMSRead(context);
 
 			Log.v(TAG, "Get ready for thread");
-			
+
 			if(aniThread == null)
 			{
 				Log.v(TAG, "damn");
 				aniThread = new AnimationThread();
 			}
-			
+
 			aniThread.SetState(true);
 			aniThread.start();
 
@@ -406,6 +421,10 @@ public class WidgetMain extends AppWidgetProvider
 			isSMSNotRead = false;
 		else
 			isSMSNotRead = true;
+	}
+
+	public static Context getApplication() {
+		return self;
 	}
 
 	class _ThreadHandler extends Handler

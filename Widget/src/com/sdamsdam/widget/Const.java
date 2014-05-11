@@ -2,6 +2,8 @@ package com.sdamsdam.widget;
 
 public class Const
 {
+	public static final String TAG = "sdamsdam";
+	
 	/* BroadCastReceiver Filter */
 	public static final String ACTION_EVENT		= "com.sdamsdam.widget.ACTION_EVENT";
 	public static final String ACTION_MOVE 		= "com.sdamsdam.widget.ACTION_MOVE";
